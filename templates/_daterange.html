@@ -1,0 +1,20 @@
+<div id="daterange">
+    <form method="get" action="">
+    <table class="date">
+        {% if form.errors %}
+        <caption>
+            <ul class="field-error">
+                {% for k,v in form.errors.items %}
+                <li>{{ v }}</li>
+                {% endfor %}
+            </ul>
+        </caption>
+        {% endif %}
+        <tr>
+            <td class="{% if form.start.errors %}field-error{% endif %}">From: {{ form.start }}</td>    
+            <td class="{% if form.end.errors %}field-error{% endif %}">To: {{ form.end }}</td>    
+            <td class="date"><input type="submit" value="find" class="no-margin" /></td>
+        </tr>
+    </table>
+    </form>
+</div>

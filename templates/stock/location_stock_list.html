@@ -1,0 +1,52 @@
+{% extends "stock/base.html" %}
+{% block htmlhead %}
+
+{% endblock %}
+{% if location %}
+    {% block header %}{{ location|capfirst }}{% endblock %}
+{% endif %}
+{% block body %}
+<!--pager-->
+<div class='pager'>
+<span>
+{% if has_previous %}
+<a href='{% url stock_list %}?page={{ previous }}/'><< back</a>
+{% endif %}
+</span>
+<span>
+Page {{ page }} of {{ pages }}
+</span>
+<span>
+{% if has_next %}
+<a href='{% url stock_list %}?page={{ next }}/'>Next >></a>
+{% endif %}
+</span>
+</div>
+<!--end pager-->
+{% if stock_list %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Item</th>
+    <th class='sort-alpha'>Qty</th>
+    <th class='sort-alpha'>Cost Price</th>
+    <th class='sort-alpha'>Selling Price</th>
+</tr>
+</thead>
+<tbody>
+    {% if stock_list %}
+        {% for stock in stock_list %}
+            <tr>
+                <td>{{ stock.item.name }}</td>
+                <td>{{ stock.quantity }}</td>
+                <td>{{ stock.item.cost_price }}</td>
+                <td>{{ stock.item.selling_price }}</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+</tbody>
+</table>
+{% else %}
+No stocks
+{% endif %}
+{% endblock %}

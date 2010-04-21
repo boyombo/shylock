@@ -1,0 +1,31 @@
+{% extends "stock/base.html" %}
+{% block htmlhead %}
+
+{% endblock %}
+{% block header %}Stock: {{ location_type|capfirst }}s{% endblock %}
+{% block body %}
+{% if location_list %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Name</th>
+    <th class='sort-alpha'>Type</th>
+    <th>stock</th>
+</tr>
+</thead>
+<tbody>
+    {% if location_list %}
+        {% for location in location_list %}
+            <tr>
+                <td>{{ location.name }}</td>
+                <td>{{ location.get_type_display }}</td>
+                <td><a href="{% url location_stock_list loc_id=location.id %}">stock</a></td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+</tbody>
+</table>
+{% else %}
+No locations
+{% endif %}
+{% endblock %}
