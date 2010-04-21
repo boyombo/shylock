@@ -1,0 +1,71 @@
+{% extends "expenses/base.html" %}
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+{{ form.media }}
+{% endblock %}
+{% block header %}
+Expenses
+{% endblock %}
+{% block body %}
+<div id="daterange">
+    <form method="get" action="">
+    <table class="date">
+        {% if form.errors %}
+        <caption>
+            <ul class="field-error">
+                {% for k,v in form.errors.items %}
+                <li>{{ v }}</li>
+                {% endfor %}
+            </ul>
+        </caption>
+        {% endif %}
+        <tr>
+            <td class="{% if form.start.errors %}field-error{% endif %}">From: {{ form.start }}</td>    
+            <td class="date">{{ form.end.errors }}To: {{ form.end }}</td>
+            <td class="date"><input type="submit" value="find" /></td>
+        </tr>
+    </table>
+    </form>
+</div>
+<div>
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Description</th>
+    <th class='sort-alpha'>Category</th>
+    <th class='sort-alpha'>Amount</th>
+    <th class='sort-alpha'>Date</th>
+</tr>
+</thead>
+<tbody>
+    {% for expense in object_list %}
+        <tr class="{% cycle 'even' 'odd' %}">
+            <td>{{ expense.description }}</td>
+            <td>{{ expense.category }}</td>
+            <td>{{ expense.amount|floatformat:"2" }}</td>
+            <td>{{ expense.date|date:"jS M Y" }}</td>
+        </tr>
+    {% empty %}
+    No expenses to display.
+    {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="3">
+            {% for p in paginator.page_range %}
+            {% ifnotequal page p %}
+                <span class="paginator"><a href="?page={{ p }}&start={{ start|date:'Y-m-d' }}&end={{ end|date:'Y-m-d' }}">{{ p }}</a></span>
+            {% else %}
+            <span class="paginator">{{ p }}</span>
+            {% endifnotequal %}
+            {% endfor %}
+        </td>
+        <td>
+            Total of {{ paginator.count }} item{{ paginator.count|pluralize }}.
+        </td>
+    </tr>
+</tfoot>
+</table>
+</div>
+{% endblock %}
+

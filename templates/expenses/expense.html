@@ -1,0 +1,34 @@
+{% extends "expenses/base.html" %}
+{% block extrahead %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('#id_description').focus();
+ });
+</script>
+{{ form.media }}
+{% endblock %}
+{% block header %}New Expense{% endblock %}
+{% block body %}
+
+<form method="POST" action="."> 
+  <ul>
+      <li>
+      {{ form.description.errors }}
+      {{ form.description.label_tag }} {{ form.description }}
+      </li>
+      <li>
+      {{ form.category.errors }}
+      {{ form.category.label_tag }} {{ form.category }}
+      </li>
+      <li>
+      {{ form.amount.errors }}
+      {{ form.amount.label_tag }} {{ form.amount }}
+      </li>
+      <li>
+      {{ form.date.errors }}
+      {{ form.date.label_tag }} {{ form.date }}
+      </li>
+      </ul>
+  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "stock/base.html" %}
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+{% block header %}Stock list{% endblock %}
+{% block body %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Item</th>
+    <th class='sort-alpha'>Qty</th>
+    <th class='sort-alpha'>Cost Price</th>
+    <th class='sort-alpha'>Selling Price</th>
+</tr>
+</thead>
+<tbody>
+        {% for stock in stock_list %}
+            <tr class={% cycle "even" "odd" %}>
+                <td>{{ stock.description }} ({{ stock.code }})</td>
+                <td>{{ stock.quantity }}</td>
+                <td>{{ stock.cost_price }}</td>
+                <td>{{ stock.selling_price }}</td>
+            </tr>
+        {% empty %}
+        No items to display
+        {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="3">
+            {% for p in paginator.page_range %}
+            {% ifnotequal page p %}
+                <span class="paginator"><a href="?page={{ p}}">{{ p }}</a></span>
+            {% else %}
+            <span class="paginator">{{ p }}</span>
+            {% endifnotequal %}
+            {% endfor %}
+        </td>
+        <td>
+            Total of {{ paginator.count }} item{{ paginator.count|pluralize }}.
+        </td>
+    </tr>
+</tfoot>
+</table>
+<br />
+{% endblock %}
