@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 from datewidget import DateTimeWidget
 from django import forms
+from datetime import date
 
 class MyDateField(forms.DateField):
     widget = DateTimeWidget
     
     def __init__(self, *args, **kwargs):
         super(MyDateField, self).__init__()
-        self.input_formats = ('%d/%m/%Y',) + (self.input_formats)
+        self.input_formats = ('%d/%m/%Y',)
 
 class DateRangeForm(forms.Form):
-    start = MyDateField()
-    end = MyDateField()
+    start = MyDateField(initial=date.today)
+    end = MyDateField(initial=date.today)
     
     def clean(self):
         if 'end' in self.cleaned_data and 'start' in self.cleaned_data:

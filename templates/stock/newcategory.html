@@ -1,0 +1,26 @@
+{% extends "stock/base.html" %}
+{% block extrahead %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('#id_name').focus();
+ });
+</script>
+{{ form.media }}
+{% endblock %}
+{% block header %}New Category{% endblock %}
+{% block body %}
+
+<form method="POST" action=".">{% csrf_token %} 
+  <ul>
+      <li>
+      {{ form.name.errors }}
+      {{ form.name.label_tag }} {{ form.name }}
+      </li>
+      <li>
+      {{ form.description.errors }}
+      {{ form.description.label_tag }} {{ form.description }}
+      </li>
+      </ul>
+  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}

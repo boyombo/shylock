@@ -62,8 +62,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 	'django.core.context_processors.auth',
 	'django.core.context_processors.debug',
 	'django.core.context_processors.i18n',
-	'django.core.context_processors.request',
     'django.core.context_processors.media',
+	'django.core.context_processors.request',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -72,6 +72,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.middleware.doc.XViewMiddleware',
     'django.middleware.transaction.TransactionMiddleware',
+    'pagination.middleware.PaginationMiddleware',
 )
 
 ROOT_URLCONF = 'shylock.urls'
@@ -84,6 +85,9 @@ TEMPLATE_DIRS = (
 )
 
 INSTALLED_APPS = (
+    #'admin_tools.theming',
+    #'admin_tools.menu',
+    #'admin_tools.dashboard',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -99,6 +103,7 @@ INSTALLED_APPS = (
     'simplereports',
     'accounting',
 	'django_extensions',
+    'pagination',
 )
 
 LOGIN_REDIRECT_URL = '/'

@@ -3,10 +3,12 @@ from django.contrib.auth.models import User
 from supplier.models import Supplier
 from stock.models import Item
 from datetime import datetime
+from extras.daterange import MyDateField
 
 class Reception(models.Model):
     item = models.ForeignKey(Item)
     supplier = models.ForeignKey(Supplier)
+    #date = MyDateField()
     date = models.DateField()
     quantity = models.FloatField()
     unit_cost = models.DecimalField(max_digits=10, decimal_places=2)

@@ -140,8 +140,9 @@
         var sale_options = {
             url: '{% url sale_new %}',
             type: 'POST',
-            success: function(){
+            success: function(data){
                 $('#clear').click();
+                $('div.msg > ul.message').html(data);
             },
             error: function(){
                 alert('You have entered wrong data');
@@ -154,6 +155,10 @@
 {% block header %}Sale
 {% endblock %}
 {% block body %}
+<div class="msg">
+    <ul class="message">
+    </ul>
+</div>
 <div id="sale-heading">
         <span class="date">{% now "jS F Y" %}</span>
 </div>
@@ -165,7 +170,7 @@
         <input type="button" id="itemsubmit" style="margin-left:0;" value="add" />    </fieldset>
 </form>
 
-<form id="invoiceform" method="post" action="{% url sale_new %}">
+<form id="invoiceform" method="post" action="{% url sale_new %}">{% csrf_token %}
     <fieldset>
         <legend>Invoice: {{ invoice_number }}</legend>
         

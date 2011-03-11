@@ -4,6 +4,7 @@ from sale.forms import InvoiceForm, SelectItemForm, CustomerForm
 from extras.daterange import DateRangeForm
 from django.views.generic.list_detail import object_list
 from django.conf import settings
+from django.contrib import messages
 from django.template.context import RequestContext
 from django.template import Template
 from django.template.context import Context
@@ -59,9 +60,10 @@ def sale_new(request):
             discount = invoiceform.cleaned_data['discount']
         customerform = CustomerForm(request.POST)
         if customerform.is_valid():
-            customer = customerform.save()
+            customer_name = customerform.cleaned_data['name']
+            cust, _ = Customer.objects.get_or_create(name__iexact=customer_name)
         else:
-            customer = None
+            cust = None
         data.pop('name')
         data.pop('discount')
         if not data:
@@ -70,13 +72,15 @@ def sale_new(request):
         items = Item.objects.filter(code__in=data.keys())
         if items.count() < len(data):
             return HttpResponseBadRequest('The items sent are invalid.')#how do we get this?
-        invoice = Invoice(teller=request.user, discount=discount, customer=customer)
+        invoice = Invoice(teller=request.user, discount=discount, customer=cust)
         invoice.save()
         #import pdb;pdb.set_trace()
-        for k,v in data.items():
-            sale = Sale(invoice=invoice, item=items.get(code=k), quantity=float(v[0]))
-            sale.save()
-        return HttpResponse('Done')
+        for key, value in data.items():
+            sale = Sale.objects.create(
+                    invoice=invoice, 
+                    item=items.get(code=key), 
+                    quantity=float(value[0]))
+        return HttpResponse('The sale is successful')
     else:
         form = InvoiceForm()
         itemform = SelectItemForm()
