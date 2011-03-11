@@ -1,0 +1,53 @@
+{% extends "movement/base.html" %}
+{% block htmlhead %}
+
+{% endblock %}
+{% block body %}
+<!--pager-->
+<div class='pager'>
+<span>
+{% if has_previous %}
+<a href='/movement/transfer/?page={{ previous }}/'><< back</a>
+{% endif %}
+</span>
+<span>
+Page {{ page }} of {{ pages }}
+</span>
+<span>
+{% if has_next %}
+<a href='/movement/transfer/?page={{ next }}/'>Next >></a>
+{% endif %}
+</span>
+</div>
+<!--end pager-->
+{% if transfer_list %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Item</th>
+    <th class='sort-alpha'>Qty</th>
+    <th class='sort-alpha'>From</th>
+    <th class='sort-alpha'>To</th>
+    <th class='sort-alpha'>Date</th>
+    <th class='sort-alpha'>User</th>
+</tr>
+</thead>
+<tbody>
+    {% if transfer_list %}
+        {% for transfer in transfer_list %}
+            <tr>
+                <td>{{ transfer.item.name }}</td>
+                <td>{{ transfer.quantity }}</td>
+                <td>{{ transfer.from_location }}</td>
+                <td>{{ transfer.to_location }}</td>
+                <td>{{ transfer.date|date:"d/m/Y" }}</td>
+                <td>{{ transfer.user.username }}</td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+</tbody>
+</table>
+{% else %}
+No transfers
+{% endif %}
+{% endblock %}

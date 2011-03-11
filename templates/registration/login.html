@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block sub_menu %}{% endblock %}
+{% block body %}
+<div class="post">
+	<h1 class="title">Login</h1>
+	<div class="entry">
+        <form method="post" action="">{% csrf_token %}
+			<p{% if form.username.errors %} class="field-error"{% endif %}>
+				{{ form.username.label_tag }}<br />
+				{{ form.username }}
+			</p>
+			<p{% if form.password.errors %} class="field-error"{% endif %}>
+				{{ form.password.label_tag }}<br />
+				{{ form.password }}
+			</p>
+			<p>
+				<input type="submit" value="login" class="regular" />
+			</p>
+		</form><script type="text/javascript">document.getElementById('id_username').focus();</script>
+	</div>
+</div>
+{% endblock %}

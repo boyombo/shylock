@@ -1,0 +1,29 @@
+{% extends "sale/base.html" %}
+{% block htmlhead %}
+
+{% endblock %}
+{% block header %}Sale: Shops{% endblock %}
+{% block body %}
+{% if shop_list %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Name</th>
+    <th>sale</th>
+</tr>
+</thead>
+<tbody>
+    {% if shop_list %}
+        {% for shop in shop_list %}
+            <tr>
+                <td>{{ shop.name }}</td>
+                <td><a href="{% url sale_new shop=shop.id %}">make sale</a></td>
+            </tr>
+        {% endfor %}
+    {% endif %}
+</tbody>
+</table>
+{% else %}
+No shops
+{% endif %}
+{% endblock %}

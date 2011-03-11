@@ -1,0 +1,40 @@
+{% extends "accounting/base.html" %}
+{% load humanize %}
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+{{ form.media }}
+{% endblock %}
+{% block header %}
+Profit and Loss between {{ start|date:"jS M Y" }} and {{ end|date:"jS M Y" }}
+{% endblock %}
+{% block body %}
+{% include "_daterange.html" %}
+<div class="container">
+    
+<div>
+<table id="pltable">
+    <caption><strong>Profit and Loss Summary</strong></caption>
+    <tr>
+        <td>Sales</td>
+        <td>{{ pl.sales|floatformat:"2"|intcomma }}</td>
+    </tr>
+    <tr>
+        <td>Cost of Sales</td>
+        <td>{{ pl.cost_of_sales|floatformat:"2"|intcomma }} ( {{ pl.cos_percent|floatformat:"2" }}% )</td>
+    </tr>
+    <tr class="yellow">
+        <td>Gross Profit</td>
+        <td>{{ pl.gross|floatformat:"2"|intcomma }} ( {{ pl.gross_percent|floatformat:"2" }}% )</td>
+    </tr>
+    <tr>
+        <td>Expenses</td>
+        <td>{{ pl.expenses|floatformat:"2"|intcomma }}</td>
+    </tr>
+    <tr class="yellow">
+        <td>Net Profit</td>
+        <td>{{ pl.net|floatformat:"2"|intcomma }} ( {{ pl.net_percent|floatformat:"2" }}% )</td>
+    </tr>
+</table>
+</div>
+</div>
+{% endblock %}

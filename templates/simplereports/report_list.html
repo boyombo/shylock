@@ -1,0 +1,21 @@
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    {% for heading in headings %}
+        <th>{{ heading|title }}</th>
+    {% endfor %}
+</tr>
+</thead>
+<tbody>
+        {% for obj in obj_list %}
+            <tr>
+                {% for field in obj %}
+                    <td>{{ field }}</td>
+                {% endfor %}
+            </tr>
+        {% empty %}
+            No item to display.
+        {% endfor %}
+</tbody>
+
+</table>
