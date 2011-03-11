@@ -1,17 +1,21 @@
-{% extends "expenses/base.html" %}
+{% extends "stock/base.html" %}
 {% block extrahead %}
 <script type='text/javascript'>
 $(document).ready(function(){
-    $('#id_description').focus();
+    $('#id_code').focus();
  });
 </script>
 {{ form.media }}
 {% endblock %}
-{% block header %}New Expense{% endblock %}
+{% block header %}New Item{% endblock %}
 {% block body %}
 
 <form method="POST" action=".">{% csrf_token %} 
   <ul>
+      <li>
+      {{ form.code.errors }}
+      {{ form.code.label_tag }} {{ form.code }}
+      </li>
       <li>
       {{ form.description.errors }}
       {{ form.description.label_tag }} {{ form.description }}
@@ -21,12 +25,16 @@ $(document).ready(function(){
       {{ form.category.label_tag }} {{ form.category }}
       </li>
       <li>
-      {{ form.amount.errors }}
-      {{ form.amount.label_tag }} {{ form.amount }}
+      {{ form.quantity.errors }}
+      {{ form.quantity.label_tag }} {{ form.quantity }}
       </li>
       <li>
-      {{ form.date.errors }}
-      {{ form.date.label_tag }} {{ form.date }}
+      {{ form.cost_price.errors }}
+      {{ form.cost_price.label_tag }} {{ form.cost_price }}
+      </li>
+      <li>
+      {{ form.selling_price.errors }}
+      {{ form.selling_price.label_tag }} {{ form.selling_price }}
       </li>
       </ul>
   <div class='submit'><input type="SUBMIT" value="Submit" /></div>

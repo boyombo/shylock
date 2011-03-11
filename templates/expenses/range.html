@@ -8,7 +8,7 @@ Expenses
 {% endblock %}
 {% block body %}
 <div id="daterange">
-    <form method="get" action="">
+    <form method="get" action="">{% csrf_token %}
     <table class="date">
         {% if form.errors %}
         <caption>

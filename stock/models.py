@@ -17,7 +17,7 @@ class Item(models.Model):
     category = models.ForeignKey(Category, null=True, blank=True)
     cost_price = models.DecimalField(max_digits=10, decimal_places=2)
     selling_price = models.DecimalField(max_digits=10, decimal_places=2)
-    quantity = models.PositiveIntegerField(editable=False, default=0)
+    quantity = models.PositiveIntegerField(default=0)
     
     class Meta:
         ordering = ('category',)

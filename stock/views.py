@@ -1,25 +1,63 @@
 from django.views.generic.list_detail import object_list
-#from django.template.context import RequestContext
-#from django.shortcuts import render_to_response, redirect, get_object_or_404
-from stock.models import Item
+from django.shortcuts import render_to_response, redirect, get_object_or_404
+from stock.models import Item, Category
+from stock.forms import ItemForm, CategoryForm
 from django.db.models import Q
 from django.conf import settings
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.template import Template
-from django.template.context import Context
+from django.template.context import Context, RequestContext
 from django.template.loader import render_to_string
+from django.contrib import messages
 
+def stock_categories(request):
+    return object_list(
+            request,
+            queryset=Category.objects.all(),
+            allow_empty=True,
+            template_name='stock/category_list.html'
+        )
+
+def newcategory(request, id=None):
+    if id:
+        category = get_object_or_404(Category, pk=id)
+    else:
+        category = None
+    if request.method == 'POST':
+        form = CategoryForm(request.POST, instance=category)
+        if form.is_valid():
+            category = form.save()
+            messages.info(request, 'Your category has been saved')
+            return redirect('stock_categories')
+    else:
+        form = CategoryForm(instance=category)
+    return render_to_response('stock/newcategory.html', {'form': form},
+            context_instance=RequestContext(request))
+    
 def stock_list(request):
-    page = request.GET.get('page', '1')
     return object_list(
             request,
             queryset=Item.objects.all(),
-            paginate_by=settings.ITEMS_PER_PAGE,
-            page=page,
+            allow_empty=True,
             template_name='stock/stock_list.html',
-            template_object_name='stock'
-            )
+        )
+
+def newitem(request, id=None, next='stock_newitem'):
+    if id:
+        item = get_object_or_404(Item, pk=id)
+    else:
+        item = None
+    if request.method == 'POST':
+        form = ItemForm(request.POST, instance=item)
+        if form.is_valid():
+            item = form.save()
+            messages.info(request, 'Your item has been saved')
+            return redirect(next)
+    else:
+        form = ItemForm(instance=item)
+    return render_to_response('stock/newitem.html', {'form': form},
+            context_instance=RequestContext(request))
 
 def get_item(request):
     code = request.GET.get('code')

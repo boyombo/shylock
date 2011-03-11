@@ -7,7 +7,7 @@
 <div class="post">
 	<h1 class="title">Login</h1>
 	<div class="entry">
-		<form method="post" action="">
+        <form method="post" action="">{% csrf_token %}
 			<p{% if form.username.errors %} class="field-error"{% endif %}>
 				{{ form.username.label_tag }}<br />
 				{{ form.username }}

@@ -1,18 +1,12 @@
 from django.conf.urls.defaults import *
-from stock.models import Item
-from django.conf import settings
 
-info_dict = {
-    'queryset': Item.objects.all(),
-    'paginate_by': settings.ITEMS_PER_PAGE,
-    'template_name': 'stock/stock_list.html',
-    'template_object_name': 'stock',
-}
-
-urlpatterns = patterns('',
-        url(r'list/$', 'django.views.generic.list_detail.object_list', info_dict, name='stock_list'),
-        url(r'item/$', 'stock.views.get_item', name='stock_get_item'),
-        url(r'row/$', 'stock.views.get_row', name='stock_get_row'),
-        #url(r'locationstock/(?P<loc_id>\d+)/$', 'location_stock_list', name='location_stock_list'),
-        #url(r'locations/$', 'locations', name='location_list'),
+urlpatterns = patterns('stock.views',
+        url(r'list/$', 'stock_list', name='stock_list'),
+        url(r'categories/$', 'stock_categories', name='stock_categories'),
+        url(r'item/$', 'get_item', name='stock_get_item'),
+        url(r'new/$', 'newitem', name='stock_newitem'),
+        url(r'edititem/(?P<id>\d+)/$', 'newitem', {'next': 'stock_list'}, name='stock_edititem'),
+        url(r'newcategory/$', 'newcategory', name='stock_newcategory'),
+        url(r'editcategory/(?P<id>\d+)/$', 'newcategory', name='stock_editcategory'),
+        url(r'row/$', 'get_row', name='stock_get_row'),
     )

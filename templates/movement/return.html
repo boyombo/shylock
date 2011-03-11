@@ -14,7 +14,7 @@ $(document).ready(function(){
  });
 </script>
 {% endblock %}
-{% block header %}Stock - Reception{% endblock %}
+{% block header %}Stock - Return{% endblock %}
 {% block body %}
 <form method="POST" action=".">{% csrf_token %} 
   <ul>
@@ -33,14 +33,6 @@ $(document).ready(function(){
       <li>
       {{ form.quantity.errors }}
       {{ form.quantity.label_tag }} {{ form.quantity }}
-      </li>
-      <li>
-      {{ form.unit_cost.errors }}
-      {{ form.unit_cost.label_tag }} {{ form.unit_cost }}
-      </li>
-      <li>
-      {{ form.location.errors }}
-      {{ form.location.label_tag }} {{ form.location }}
       </li>
     <div class='submit'><input type="SUBMIT" value="Submit" /></div>
  </form>

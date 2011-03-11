@@ -10,7 +10,7 @@ $(document).ready(function(){
 {% block header %}New Expense{% endblock %}
 {% block body %}
 
-<form method="POST" action="."> 
+<form method="POST" action=".">{% csrf_token %}
   <ul>
       <li>
       {{ form.description.errors }}

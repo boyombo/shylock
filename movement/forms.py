@@ -3,14 +3,15 @@ from django import forms
 from movement.models import Reception, Return
 #from stock.models import LocationItems
 from extras.datewidget import DateTimeWidget
+from datetime import date
 
 class ReceptionForm(forms.ModelForm):
-    date = forms.DateField(widget=DateTimeWidget(), input_formats=['%d/%m/%Y'])
+    date = forms.DateField(widget=DateTimeWidget, initial=date.today, input_formats=['%d/%m/%Y'])
     class Meta:
         model = Reception
 
 class ReturnForm(forms.ModelForm):
-    date = forms.DateField(widget=DateTimeWidget())
+    date = forms.DateField(widget=DateTimeWidget, initial=date.today, input_formats=['%d/%m/%Y'])
     
     class Meta:
         model = Return

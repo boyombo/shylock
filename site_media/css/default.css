@@ -211,6 +211,11 @@ a:hover {
 	padding: 20px 20px;
 	background: url(../images/bg04.jpg) no-repeat top left;
 }
+.addbutton {
+	padding: 10px 10px;
+        float: right;
+	background: url(../images/icon_add.gif) no-repeat center left;
+}
 
 .title {
 	margin: 0 0 15px;
@@ -387,8 +392,8 @@ form input[type="submit"].regular {
 }
 form textarea {
 	display: block;
-	width: 100%;
-	height: 160px;
+	/*width: 100%;
+	height: 160px;*/
 }
 form select {
 	display: inline;
@@ -400,7 +405,8 @@ form ul {
 	margin-left: 0;
 	padding-left: 0;
 }
-.field-error{
+.field-error, .errorlist{
+    color: #ff0000;
 }
 form label{
 	padding-right:5px;

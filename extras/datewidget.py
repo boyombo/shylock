@@ -11,7 +11,6 @@ class DateTimeWidget(widgets.DateInput):
     """
     A Calendar widget, which uses the jQuery UI Calendar.
     """
-
     class Media:
         extend = False
         css = {
