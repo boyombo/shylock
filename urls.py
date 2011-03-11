@@ -20,7 +20,7 @@ urlpatterns += patterns('',
 
 	#Uncomment this for admin:
 	(r'^admin/', include(admin.site.urls)),
-    (r'^admin_tools/', include('admin_tools.urls')),
+    #(r'^admin_tools/', include('admin_tools.urls')),
 	(r'^suppliers/', include('supplier.urls')),
 	(r'^stock/', include('stock.urls')),
 	(r'^movement/', include('movement.urls')),

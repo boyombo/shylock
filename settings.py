@@ -112,3 +112,8 @@ ITEMS_PER_PAGE = 5
 #Max size of the employee photos
 PHOTO_MAX_SIZE = 100,100
 INVOICE_NUMBER_WIDTH = 3
+
+try:
+    from local_settings import *
+except ImportError:
+    pass
