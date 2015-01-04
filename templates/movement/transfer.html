@@ -1,0 +1,32 @@
+{% extends "movement/base.html" %}
+{% block htmlhead %}
+{{ form.media }}
+{% endblock %}
+{% block header %}Movement - Transfer{% endblock %}
+{% block body %}
+<form method="POST" action=".">{% csrf_token %} 
+    {{ form.non_field_errors }}
+  <ul>
+      <li>
+      {{ form.item.errors }}
+      {{ form.item.label_tag }}: {{ form.item }}
+      </li>
+      <li>
+      {{ form.quantity.errors }}
+      {{ form.quantity.label_tag }}: {{ form.quantity }}
+      </li>
+      <li>
+      {{ form.from_location.errors }}
+      {{ form.from_location.label_tag }}: {{ form.from_location }}
+      </li>
+     <li>
+      {{ form.to_location.errors }}
+      {{ form.to_location.label_tag }}: {{ form.to_location }}
+      </li>
+    <li>
+      {{ form.date.errors }}
+      {{ form.date.label_tag }}: {{ form.date }}
+      </li>
+      <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}

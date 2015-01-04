@@ -1,0 +1,47 @@
+{% extends "stock/base.html" %}
+{% load pagination_tags %}
+
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+{% block header %}Stock list{% endblock %}
+
+{% block toplinks %}
+<div><a href="{% url stock_newitem %}" class="addbutton">add new</a></div>
+{% endblock %}
+
+{% block body %}
+    {% autopaginate object_list 20 %}
+    {% paginate %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th>edit</th>
+    <th class='sort-alpha'>Item</th>
+    <th class='sort-alpha'>Qty</th>
+    <th class='sort-alpha'>Cost Price</th>
+    <th class='sort-alpha'>Selling Price</th>
+</tr>
+</thead>
+<tbody>
+        {% for stock in object_list %}
+            <tr class={% cycle "even" "odd" %}>
+                <td><a href="{% url stock_edititem id=stock.id %}">edit</a></td>
+                <td>{{ stock.description }} ({{ stock.code }})</td>
+                <td>{{ stock.quantity }}</td>
+                <td>{{ stock.cost_price }}</td>
+                <td>{{ stock.selling_price }}</td>
+            </tr>
+        {% empty %}
+        No items to display
+        {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <td>Count: {{ object_list|length }}</td>
+        <td colspan=4></td>
+    </tr>
+</tfoot>
+</table>
+<br />
+{% endblock %}

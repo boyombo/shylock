@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block header %}Sale{% endblock %}
+{% block body %}
+
+{% endblock %}
+{% block sub_menu %}
+<li><a href="{% url sale_list %}">Sales</a></li>
+<li><a href="{% url sale_customer_list %}">Customers</a></li>
+<li><a href="{% url sale_new %}">New Sale</a></li>
+{% endblock %}

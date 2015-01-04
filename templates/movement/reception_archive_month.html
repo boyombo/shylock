@@ -1,0 +1,44 @@
+{% extends "movement/base.html" %}
+{% block htmlhead %}
+
+{% endblock %}
+{% block header %}
+Receptions
+{% endblock %}
+{% block body %}
+
+<div>
+    {% for d in date_list %}
+        <a href="{% url reception_archive_year year=d.year %}">{{ d|date:"Y" }}</a> &nbsp;
+    {% endfor %}
+</div>
+<div>
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Item</th>
+    <th class='sort-alpha'>Qty</th>
+    <th class='sort-alpha'>Unit Cost</th>
+    <th class='sort-alpha'>Supplier</th>
+    <th class='sort-alpha'>Date</th>
+</tr>
+</thead>
+<tbody>
+    {% for reception in object_list %}
+        <tr class="{% cycle 'even' 'odd' %}">
+            <td>{{ reception.item.description }} ({{ reception.item.code }})</td>
+            <td>{{ reception.quantity }}</td>
+            <td>{{ reception.unit_cost }}</td>
+            <td>{{ reception.supplier.name }}</td>
+            <td>{{ reception.date|date:"jS M Y" }}</td>
+        </tr>
+    {% empty %}
+    No receptions to display.
+    {% endfor %}
+</tbody>
+<tfoot>
+    <tr><td colspan="5">{{ object_list|length }} items.</td></tr>
+</tfoot>
+</table>
+</div>
+{% endblock %}

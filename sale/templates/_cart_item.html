@@ -1,0 +1,8 @@
+<tr>
+    <td class="code">{{ item.code }}</td>
+    <td class="description">{{ item.description }}</td>
+    <td class="price">{{ item.selling_price|floatformat:"2" }}</td>
+    <td class="avail">{{ item.quantity }}</td>
+    <td class="qty"><input type="text" value="1" name="{{ item.code }}" id="{{ item.code }}" /></td>
+    <td><img src="{{ MEDIA_URL }}images/icon_remove.gif" class="remove-item" /></td>
+</tr>

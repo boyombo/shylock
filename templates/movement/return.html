@@ -1,0 +1,39 @@
+{% extends "movement/base.html" %}
+{% block extrahead %}
+{% comment %}
+<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.form.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery-ui-themeroller.css" />
+{% endcomment %}
+{{ form.media }}
+<script type='text/javascript'>
+$(document).ready(function(){
+ $('fieldset').each(function(){
+   var heading = $('legend', this).remove().text();
+   $(this).prepend('<h3>' + heading + '</h3>');
+  });
+ });
+</script>
+{% endblock %}
+{% block header %}Stock - Return{% endblock %}
+{% block body %}
+<form method="POST" action=".">{% csrf_token %} 
+  <ul>
+      <li>
+      {{ form.item.errors }}
+      {{ form.item.label_tag }} {{ form.item }}
+      </li>
+      <li>
+      {{ form.supplier.errors }}
+      {{ form.supplier.label_tag }} {{ form.supplier }}
+      </li>
+      <li>
+      {{ form.date.errors }}
+      {{ form.date.label_tag }} {{ form.date }}
+      </li>
+      <li>
+      {{ form.quantity.errors }}
+      {{ form.quantity.label_tag }} {{ form.quantity }}
+      </li>
+    <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}

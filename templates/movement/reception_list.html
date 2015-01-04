@@ -1,0 +1,12 @@
+{% extends "simplereports/object_list.html" %}
+{% block header %}
+Receptions
+{% endblock %}
+
+{% block toplinks %}
+<div><a href="{% url movement_receive %}" class="addbutton">add new</a></div>
+{% endblock %}
+
+{% block sub_menu %}
+{% include "movement/_submenu.html" %}
+{% endblock %}
