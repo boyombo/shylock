@@ -18,21 +18,22 @@ urlpatterns += patterns('',
     # Example:
     # (r'^payroll/', include('payroll.foo.urls')),
 
-	#Uncomment this for admin:
-	(r'^admin/', include(admin.site.urls)),
+    #Uncomment this for admin:
+    (r'^admin/', include(admin.site.urls)),
     #(r'^admin_tools/', include('admin_tools.urls')),
-	(r'^suppliers/', include('supplier.urls')),
-	(r'^stock/', include('stock.urls')),
-	(r'^movement/', include('movement.urls')),
-	(r'^sale/', include('sale.urls')),
-	(r'^expenses/', include('expenses.urls')),
-	(r'^simplereports/', include('simplereports.urls')),
-	(r'^accounting/', include('accounting.urls')),
-	(r'^$', 'django.views.generic.simple.direct_to_template',{'template':'default.html'}),
+    (r'^suppliers/', include('supplier.urls')),
+    (r'^api/$', 'sale.views.json_api'),
+    (r'^stock/', include('stock.urls')),
+    (r'^movement/', include('movement.urls')),
+    (r'^sale/', include('sale.urls')),
+    (r'^expenses/', include('expenses.urls')),
+    (r'^simplereports/', include('simplereports.urls')),
+    (r'^accounting/', include('accounting.urls')),
+    (r'^$', 'django.views.generic.simple.direct_to_template',{'template':'default.html'}),
 )
 
 # Static content serving, for development only!
 if settings.DEBUG:
-	urlpatterns += patterns('',
-		(r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': os.path.join(os.path.dirname(__file__),'site_media')}),
-	)
+    urlpatterns += patterns('',
+        (r'^site_media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': os.path.join(os.path.dirname(__file__),'site_media')}),
+    )

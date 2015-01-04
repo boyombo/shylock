@@ -14,12 +14,14 @@ from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.db.models import Q
 from random import random
 from datetime import date, timedelta
+import json
 import logging
 import os
 
 LOGFILE = os.path.join(settings.PROJECT_DIR, 'logfile.log')
 FMT = '[%(asctime)s] %(levelname)s %(message)s'
 logging.basicConfig(filename=LOGFILE, level=logging.DEBUG, format=FMT)
+
 
 def customer_list(request):
     page = request.GET.get('page','1')
@@ -142,3 +144,7 @@ def delete_cart(session):
     id = session.pop('cart_id')
     Cart.objects.filter(session_key=id).delete()
 
+def json_api(request):
+    data = {'text': 'ok'}
+    response = HttpResponse(json.dumps(data), mimetype='text/json')
+    return response
