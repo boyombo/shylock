@@ -26,13 +26,13 @@ class InvoiceManager(models.Manager):
         else:
             next_num = last_num + 1
         return unicode(next_num).zfill(settings.INVOICE_NUMBER_WIDTH)
-    
+
 class Invoice(models.Model):
     customer = models.ForeignKey(Customer, blank=True, null=True)
     date = models.DateField(default=datetime.now)
     discount = models.DecimalField(decimal_places=2, max_digits=10, default=Decimal("0.00"))
     teller = models.ForeignKey(User)
-    
+
     objects = InvoiceManager()
 
     class Meta:
@@ -40,7 +40,7 @@ class Invoice(models.Model):
 
     def __unicode__(self):
         return '%s (%s)' % (self.date, self.amount)
-    
+
     @property
     def invoice_number(self):
         return unicode(self.id).zfill(3)
@@ -48,7 +48,7 @@ class Invoice(models.Model):
     @property
     def amount(self):
         return sum(sale.amount for sale in self.sale_set.all()) - self.discount
-    
+
 class Sale(models.Model):
     item = models.ForeignKey(Item)
     quantity = models.FloatField()
@@ -57,16 +57,16 @@ class Sale(models.Model):
 
     class Meta:
         ordering = ('-id',)
-        
+
     def __unicode__(self):
         return '%s (%s)' % (self.item, self.quantity)
-        
-    def save(self):
+
+    def save(self, *args, **kwargs):
         self.price = self.item.selling_price
         self.item.quantity -= self.quantity
         self.item.save()
-        super(Sale, self).save()
-    
+        super(Sale, self).save(*args, **kwargs)
+
     @property
     def amount(self):
         return Decimal(str(self.quantity)) * self.price
@@ -74,10 +74,10 @@ class Sale(models.Model):
 class CostOfSale(models.Model):
     sale = models.ForeignKey(Sale)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
-    
+
     class Meta:
         ordering = ('sale__invoice__date',)
-        
+
     def __unicode__(self):
         return self.amount
 
@@ -85,7 +85,7 @@ class Cart(models.Model):
     item = models.ForeignKey(Item, related_name="carts")
     qty = models.PositiveIntegerField(default=1)
     session_key = models.CharField(max_length=10)
-    
+
     def __unicode__(self):
         return self.item.code
-    
+

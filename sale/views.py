@@ -14,6 +14,12 @@ from django.http import Http404, HttpResponse, HttpResponseBadRequest
 from django.db.models import Q
 from random import random
 from datetime import date, timedelta
+import logging
+import os
+
+LOGFILE = os.path.join(settings.PROJECT_DIR, 'logfile.log')
+FMT = '[%(asctime)s] %(levelname)s %(message)s'
+logging.basicConfig(filename=LOGFILE, level=logging.DEBUG, format=FMT)
 
 def customer_list(request):
     page = request.GET.get('page','1')
@@ -55,6 +61,7 @@ def sale_new(request):
     if request.method == 'POST':
         #import pdb;pdb.set_trace()
         data = dict(request.POST.copy())
+        logging.debug('request data: %s' % data)
         invoiceform = InvoiceForm(request.POST)
         if invoiceform.is_valid():
             discount = invoiceform.cleaned_data['discount']
@@ -67,19 +74,23 @@ def sale_new(request):
         data.pop('name')
         data.pop('discount')
         if not data:
+            logging.error('no items in cart')
             return HttpResponseBadRequest('There are no items in the cart')
         #check if any of the keys is not a valid item.
         items = Item.objects.filter(code__in=data.keys())
         if items.count() < len(data):
+            logging.error('invalid items')
             return HttpResponseBadRequest('The items sent are invalid.')#how do we get this?
         invoice = Invoice(teller=request.user, discount=discount, customer=cust)
         invoice.save()
+        logging.info('saved invoice')
         #import pdb;pdb.set_trace()
         for key, value in data.items():
             sale = Sale.objects.create(
-                    invoice=invoice, 
-                    item=items.get(code=key), 
+                    invoice=invoice,
+                    item=items.get(code=key),
                     quantity=float(value[0]))
+        logging.info('sale successful')
         return HttpResponse('The sale is successful')
     else:
         form = InvoiceForm()
@@ -104,7 +115,7 @@ def customer_complete(request):
     q = request.GET.get('q','')
     result = ''.join([u'%s|%s\n'%(c.name, c.id) for c in Customer.objects.filter(name__icontains=q)])
     return HttpResponse(result)
-    
+
 def item_complete(request):
     q = request.GET.get('q','')
     result = ''.join([u'%s|%s\n'%(i.description, i.id) for i in Item.objects.filter(Q(description__icontains=q)|Q(code__icontains=q))])
@@ -112,7 +123,7 @@ def item_complete(request):
 
 def add_to_cart(form, ajax=False):
     '''get the details of an item
-    
+
     the code or name is posted here'''
     #form = SelectItemForm(request.POST)
     if form.is_valid():
@@ -126,7 +137,7 @@ def add_to_cart(form, ajax=False):
             cart.save()
         item_dict = [(item) for item in cart.item]
         return cart.item
-    
+
 def delete_cart(session):
     id = session.pop('cart_id')
     Cart.objects.filter(session_key=id).delete()
