@@ -1,0 +1,50 @@
+{% extends "expenses/base.html" %}
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+{% endblock %}
+{% block header %}
+Expenses
+{% endblock %}
+{% block body %}
+<div>
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Name</th>
+    <th class='sort-alpha'>Name</th>
+    <th class='sort-alpha'>Name</th>
+    <th class='sort-alpha'>Name</th>
+    <th class='sort-alpha'>Name</th>
+</tr>
+</thead>
+<tbody>
+    {% for expense in object_list %}
+        <tr class="{% cycle 'even' 'odd' %}">
+            <td>{{ expense.description }}</td>
+            <td>{{ expense.location }}</td>
+            <td>{{ expense.category }}</td>
+            <td>{{ expense.amount }}</td>
+            <td>{{ expense.date }}</td>
+        </tr>
+    {% empty %}
+    No expense categories to display.
+    {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="5">
+            {% for p in paginator.page_range %}
+            {% ifnotequal page p %}
+                <span class="paginator"><a href="?page={{ p}}">{{ p }}</a></span>
+            {% else %}
+            <span class="paginator">{{ p }}</span>
+            {% endifnotequal %}
+            {% endfor %}
+       
+            Total of {{ paginator.count }} item{{ paginator.count|pluralize }}.
+        </td>
+    </tr>
+</tfoot>
+</table>
+</div>
+{% endblock %}
