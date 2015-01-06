@@ -106,6 +106,7 @@ INSTALLED_APPS = (
     'accounting',
     #'django_extensions',
     'pagination',
+    'south',
 )
 
 LOGIN_REDIRECT_URL = '/'
