@@ -1,0 +1,196 @@
+{% extends "sale/base.html" %}
+{% load shopping_cart %}
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/sale.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{{ MEDIA_URL }}css/jquery.autocomplete.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src='{{ MEDIA_URL }}js/jquery.livequery.js'></script>
+<script type="text/javascript" src='{{ MEDIA_URL }}js/jquery.form.js'></script>
+<script type="text/javascript" src='{{ MEDIA_URL }}js/jquery.autocomplete.js'></script>
+{{ invoiceform.media }}
+<script type='text/javascript'>
+    $(function(){
+        $("#id_name").autocomplete("{% url sale_customer_complete %}" + $(this).val() + "",
+                {
+                   multiple: true,
+                   highlight: true
+                });
+        $('#id_item').autocomplete('{% url sale_item_complete %}' + $(this).val() + "",
+                {
+                    multiple: true,
+                    highlight: true
+                });
+        $('.formset-item').change(function(){
+            var item = $(this);
+            $.get("{% url sale_get_price %}", {'item': item.val()}, function(data){
+                var id = "#id_form-" + item.attr("name").substring(5,6) + "-price";
+                $(id).val(data);
+                });
+            });
+        
+        $('.item').click(function(){
+            $('#sale').append('<li>' + $(this).html() + '</li>');
+            return false;
+        });
+        
+        $('#showcustomer').click(function(){
+            if($(this).text() == 'show customer')
+            {
+                $('#customer-info').slideDown('fast');
+                $('#id_name').focus();
+                $(this).text('hide customer');
+            }
+            else{
+                $('#customer-info').slideUp('fast');
+                $(this).text('show customer');
+            }
+        });
+        
+        $('#id_item').focus(function(){
+            $(this).val('');
+            $(this).addClass('focussed');
+        })
+        $('#id_item').blur(function(){
+            $(this).removeClass('focussed');
+        })
+        
+        $('#itemsubmit').click(function(){
+            $.ajax({
+                   url: '{% url stock_get_item %}',
+                   type: 'GET',
+                   data: {'code': $('#id_item').val()},
+                   dataType: 'json',
+                   error: function(xhr, textStatus, errorThrown){
+                    alert('Invalid item! please enter a valid item code.');
+                    $('#id_item').focus();
+                   },
+                   success: function(data, textStatus){
+                            var code = data[0].fields.code;
+                            var count = 0;
+                            $('.qty input').each(function(i, item){
+                                if ($(this).attr('name') == code){
+                                    var newval = parseFloat($(this).val()) + 1
+                                    $(this).val(newval);
+                                    count += 1
+                                    update_totals();
+                                }
+                            });
+                            //if we are here then item is not in cart
+                            if (count == 0){
+                                $.get('{% url stock_get_row %}', {'code': code},
+                                      function(data){
+                                        $('tbody').append(data);
+                                        update_totals();
+                                      });
+                            }
+                            //either way clear the field and set focus.
+                            $('#id_item').val('').focus();
+                            update_totals();
+                        }
+            });
+        });
+        
+        var update_totals = function(){
+            var total = 0.0;
+            var count = 0;
+            $('tbody > tr').each(function(){
+                price = parseFloat($(this).find('.price').text());
+                qty = parseFloat($(this).find('.qty > input').val());
+                total += price * qty;
+                count += qty;
+            });
+            $('#total').text((total).toFixed(2));
+            $('#item_count').text(count + ' item(s)');
+        }
+        
+        $('.qty > input').livequery('keydown', function(e){
+            if ((e.which != 8) && (e.which < 48 || e.which > 57)){
+                if (e.which == 8){
+                }
+                alert('please enter a number');
+                $(this).val('1');
+                update_totals();
+            }
+        }).livequery('blur', function(){
+            update_totals();
+        });
+        
+        $('.remove-item').livequery('click', function(){
+            $(this).parents('tr').remove();
+            update_totals();
+        })
+        $('#clear').click(function(){
+            $('tbody > tr').remove();
+            update_totals();
+            $('#id_item').focus();
+        });
+        
+        $('#itemform').submit(function(){
+            return false;
+        })
+        
+        //$('#submit').click(function(){
+        //    $('#invoiceform').ajaxSubmit();
+        //    alert('there');
+        //})
+        
+        $('#id_item').focus();
+        update_totals();
+        
+        var sale_options = {
+            url: '{% url sale_new %}',
+            type: 'POST',
+            success: function(data){
+                $('#clear').click();
+                $('div.msg > ul.message').html(data);
+            },
+            error: function(){
+                alert('You have entered wrong data');
+            }
+        }
+        $('#invoiceform').ajaxForm(sale_options);
+        });
+</script>
+{% endblock %}
+{% block header %}Sale
+{% endblock %}
+{% block body %}
+<div class="msg">
+    <ul class="message">
+    </ul>
+</div>
+<div id="sale-heading">
+        <span class="date">{% now "jS F Y" %}</span>
+</div>
+
+<form id="itemform">
+    <fieldset>
+        <legend>Item</legend>
+        {{ itemform.item }}
+        <input type="button" id="itemsubmit" style="margin-left:0;" value="add" />    </fieldset>
+</form>
+
+<form id="invoiceform" method="post" action="{% url sale_new %}">{% csrf_token %}
+    <fieldset>
+        <legend>Invoice: {{ invoice_number }}</legend>
+        
+        <div id="shopping-cart">
+            {% include "_cart.html" %}
+        </div>
+        <div id="discount">
+            <div style="float:right;">
+            Discount: 
+            {{ invoiceform.discount }}
+            </div>
+        </div>
+        <div>
+        <a id="showcustomer">show customer</a>
+        <ul id="customer-info" class="hidden">
+            <li>{{ customerform.as_ul }}</li>
+        </ul>
+        </div>
+    </fieldset>
+    <input type="submit" id="submit" value="submit" />
+    <input type="button" id="clear" value="clear" />
+</form>
+{% endblock %}

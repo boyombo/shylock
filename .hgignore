@@ -1,0 +1,9 @@
+syntax: glob
+*~
+.*.swp
+.*.swo
+*.pyc
+*.db
+*.orig
+*.db
+local_settings.*

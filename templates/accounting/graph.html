@@ -1,0 +1,81 @@
+{% extends "accounting/base.html" %}
+{% load humanize %}
+{% block extrahead %}
+<!--[if IE]><script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/excanvas.min.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery-1.3.2.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ MEDIA_URL }}js/jquery.jqplot.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ MEDIA_URL }}css/jquery.jqplot.css" />
+<!--<script type="text/javascript" src="{{ MEDIA_URL }}js/raphael.js"></script> -->
+<!--<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.enumerable.js"></script> -->
+<!--<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.tufte-graph.js"></script> -->
+<!--<script type="text/javascript" src="{{ MEDIA_URL }}js/jquery.flot.js"></script> -->
+<!--<script type="text/javascript" src="{{ MEDIA_URL }}js/excanvas.min.js"></script> -->
+<!--<link rel="stylesheet" href="{{ MEDIA_URL }}css/tufte-graph.css" type="text/css" media="screen" charset="utf-8" /> -->
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+{{ form.media }}
+<script type="text/javascript">
+$(function(){
+    //var options = {
+    //    lines: { show: true },
+    //    points: { show: true },
+    //    xaxis: { tickDecimals: 0, tickSize: 1 }
+    //};
+    //
+    //var bargraph = $('#bargraph');
+    var data = [];
+    var sales_data = {{ sales_data|safe }};
+    var expense_data = {{ expense_data|safe }};
+    data.push(sales_data['data'], expense_data['data']);
+    //$.plot(bargraph, data, options);
+    $.jqplot('bargraph', data);
+    
+    //$('#bargraph').tufteBar({
+    //    data: {{ data|safe }},
+    //    color: function(index, stackedIndex){
+    //        return ['#E57536', '#82293B'][stackedIndex % 2];
+    //    }
+    //});
+});
+</script>
+{% endblock %}
+{% block header %}Profit - Chart between {{ start|date:"jS M Y" }} and {{ end|date:"jS M Y" }}{% endblock %}
+{% block body %}
+{% include "_daterange.html" %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th scope="col"></th>
+    {% for date in dates %}
+    <th scope="col">{{ date|date:"j M" }}</th>
+    {% endfor %}
+</tr>
+</thead>
+<tbody>
+    <tr>
+        <td>Sales</td>
+        {% for sale in sales %}
+        <td>{{ sale|floatformat:"2" }}</td>
+        {% endfor %}
+    </tr>
+    <tr>
+        <td>Expenses</td>
+        {% for expense in expenses %}
+        <td>{{ expense|floatformat:"2" }}</td>
+        {% endfor %}
+    </tr>
+</tbody>
+<tfoot>
+    <tr>
+        <td colspan="{{ dates|length }}">Total Sales: <span class="sale">{{ total_sales|floatformat:"2"|intcomma }}</span> -         Total Expenses: <span class="expense">{{ total_expenses|floatformat:"2"|intcomma }}</span></td>
+        <td></td>
+    </tr>
+</tfoot>
+</table>
+<br />
+<div id="bargraph" class="graph" style="width:600px; height: 300px;">
+    
+</div>
+<!--<div id="graph">-->
+<!--    <img src="{{ MEDIA_URL }}graphs/line.png"  width=550 height=350/>-->
+<!--</div>-->
+{% endblock %}

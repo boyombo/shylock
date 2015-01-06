@@ -1,0 +1,96 @@
+[
+    {
+        "pk": 7, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Boy boy", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 6, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Drunken master", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Money miss road", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 4, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Mumucious entity", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Poverty stricken", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 3, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Trickster", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 5, 
+        "model": "sale.customer", 
+        "fields": {
+            "phone": "", 
+            "name": "Workerholic", 
+            "address": ""
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sale.invoice", 
+        "fields": {
+            "customer": 4, 
+            "date": "2009-09-16", 
+            "user": 1, 
+            "location": 2, 
+            "discount": "0"
+        }
+    }, 
+    {
+        "pk": 1, 
+        "model": "sale.sale", 
+        "fields": {
+            "item": 1, 
+            "price": "500", 
+            "invoice": 1, 
+            "quantity": 2.0
+        }
+    }, 
+    {
+        "pk": 2, 
+        "model": "sale.sale", 
+        "fields": {
+            "item": 3, 
+            "price": "1000", 
+            "invoice": 1, 
+            "quantity": 3.0
+        }
+    }
+]

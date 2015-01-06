@@ -1,0 +1,3 @@
+a queueing mechanism on the local machine to post the print request to via http
+a window.open of a printer friendly page with a print button to do a window.print
+save a file on the file system and a queue to grab and print

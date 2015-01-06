@@ -1,0 +1,23 @@
+name of application: shylock
+
+kind of application: inventory management and point of sales
+
+features:
+easy to use
+web-based - you can either set it up on your local computer or have it running on a website
+data backup
+
+modules:
+stock - manages your inventory includes re-order level alert
+suppliers/customers - sales by customer, 
+receptions - track items when they come in
+sales - optional barcode module for sales with barcode scanners
+expenses
+
+reports:
+sales/expense trends (daily, weekly, monthly trends)
+sales/expense breakdown by categories
+profit & loss account
+
+optional:
+interface with custom accounting module (additional cost) to generate other accounting reports
