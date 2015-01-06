@@ -8,6 +8,7 @@ from django.template.context import RequestContext
 from django.contrib.auth.decorators import login_required
 from datetime import date, timedelta
 
+
 def list_categories(request):
     page = request.GET.get('page', '1')
     return object_list(
@@ -17,7 +18,19 @@ def list_categories(request):
         page=page,
         template_name='expenses/categories.html',
     )
-    
+
+
+def list_expenses(request):
+    page = request.GET.get('page', '1')
+    return object_list(
+        request,
+        queryset=Expense.objects.all(),
+        paginate_by=settings.ITEMS_PER_PAGE,
+        page=page,
+        template_name='expenses/expenses.html',
+    )
+
+
 def list_expense(request):
     qset = Expense.objects.all()
     if request.GET.has_key('start'):
