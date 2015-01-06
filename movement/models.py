@@ -28,11 +28,16 @@ class Reception(models.Model):
             self.item.save()
 
             # Add to stock for the location
-            stock, _ = Stock.objects.get_or_create(
-                item=self.item,
-                location=self.location)
-            stock.quantity += self.quantity
-            stock.save()
+            try:
+                stock = Stock.objects.get(
+                    item=self.item, location=self.location)
+            except Stock.DoesNotExist:
+                stock = Stock.objects.create(
+                    item=self.item, location=self.location,
+                    quantity=self.quantity)
+            else:
+                stock.quantity += self.quantity
+                stock.save()
         super(Reception, self).save()
 
     def delete(self):
