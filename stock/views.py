@@ -1,7 +1,7 @@
 from django.views.generic.list_detail import object_list
 from django.shortcuts import render_to_response, redirect, get_object_or_404
-from stock.models import Item, Category
-from stock.forms import ItemForm, CategoryForm
+from stock.models import Item, Category, Location
+from stock.forms import ItemForm, CategoryForm, LocationForm
 from django.db.models import Q
 from django.conf import settings
 from django.core import serializers
@@ -11,13 +11,40 @@ from django.template.context import Context, RequestContext
 from django.template.loader import render_to_string
 from django.contrib import messages
 
+
+def stock_locations(request):
+    return object_list(
+        request,
+        queryset=Location.objects.all(),
+        allow_empty=True,
+        template_name='stock/location_list.html'
+    )
+
+
+def newlocation(request, pk=None):
+    if pk:
+        location = get_object_or_404(Location, pk=pk)
+    else:
+        location = None
+    if request.method == 'POST':
+        form = LocationForm(request.POST, instance=location)
+        if form.is_valid():
+            location = form.save()
+            messages.info(request, 'Your Location has been saved')
+            return redirect('stock_locations')
+    else:
+        form = LocationForm(instance=location)
+    return render_to_response('stock/newlocation.html', {'form': form},
+                              context_instance=RequestContext(request))
+
+
 def stock_categories(request):
     return object_list(
-            request,
-            queryset=Category.objects.all(),
-            allow_empty=True,
-            template_name='stock/category_list.html'
-        )
+        request,
+        queryset=Category.objects.all(),
+        allow_empty=True,
+        template_name='stock/category_list.html'
+    )
 
 def newcategory(request, id=None):
     if id:
@@ -34,7 +61,7 @@ def newcategory(request, id=None):
         form = CategoryForm(instance=category)
     return render_to_response('stock/newcategory.html', {'form': form},
             context_instance=RequestContext(request))
-    
+
 def stock_list(request):
     return object_list(
             request,
