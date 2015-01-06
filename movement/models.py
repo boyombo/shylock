@@ -1,13 +1,15 @@
 from django.db import models
 from django.contrib.auth.models import User
 from supplier.models import Supplier
-from stock.models import Item
+from stock.models import Item, Location, Stock
 from datetime import datetime
 from extras.daterange import MyDateField
+
 
 class Reception(models.Model):
     item = models.ForeignKey(Item)
     supplier = models.ForeignKey(Supplier)
+    location = models.ForeignKey(Location)
     #date = MyDateField()
     date = models.DateField()
     quantity = models.FloatField()
@@ -24,6 +26,13 @@ class Reception(models.Model):
             self.item.quantity += self.quantity
             self.item.cost_price = self.unit_cost
             self.item.save()
+
+            # Add to stock for the location
+            stock, _ = Stock.objects.get_or_create(
+                item=self.item,
+                location=self.location)
+            stock.quantity += self.quantity
+            stock.save()
         super(Reception, self).save()
 
     def delete(self):
@@ -33,18 +42,19 @@ class Reception(models.Model):
         self.item.save()
         super(Reception, self).delete()
 
+
 class Return(models.Model):
     item = models.ForeignKey(Item)
     supplier = models.ForeignKey(Supplier)
     date = models.DateField()
     quantity = models.PositiveIntegerField()
-    
+
     class Meta:
         ordering = ('-date',)
-    
+
     def __unicode__(self):
         return self.item.name
-    
+
     def save(self):
         if not self.id:
             if self.quantity > self.item.quantity:
@@ -52,7 +62,7 @@ class Return(models.Model):
             self.item.quantity -= self.quantity
             self.item.save()
             super(Return, self).save()
-    
+
     def delete(self):
         self.item.quantity += self.quantity
         self.item.save()
