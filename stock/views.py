@@ -1,6 +1,6 @@
 from django.views.generic.list_detail import object_list
 from django.shortcuts import render_to_response, redirect, get_object_or_404
-from stock.models import Item, Category, Location
+from stock.models import Item, Category, Location, Stock
 from stock.forms import ItemForm, CategoryForm, LocationForm
 from django.db.models import Q
 from django.conf import settings
@@ -46,6 +46,7 @@ def stock_categories(request):
         template_name='stock/category_list.html'
     )
 
+
 def newcategory(request, id=None):
     if id:
         category = get_object_or_404(Category, pk=id)
@@ -59,10 +60,43 @@ def newcategory(request, id=None):
             return redirect('stock_categories')
     else:
         form = CategoryForm(instance=category)
-    return render_to_response('stock/newcategory.html', {'form': form},
-            context_instance=RequestContext(request))
+    return render_to_response(
+        'stock/newcategory.html', {'form': form},
+        context_instance=RequestContext(request))
+
 
 def stock_list(request):
+    loc = request.GET.get('location', '')
+    if loc:
+        location = Location.objects.get(pk=loc)
+        items = [
+            (
+                stock.item.description,
+                stock.quantity,
+                stock.item.cost_price,
+                stock.item.selling_price
+            ) for stock in Stock.objects.filter(location=location)
+        ]
+    else:
+        location = None
+        items = [
+            (
+                item.description,
+                item.quantity,
+                item.cost_price,
+                item.selling_price
+            ) for item in Item.objects.all()
+        ]
+    locations = Location.objects.all()
+    return render_to_response(
+        'stock/stock_list.html',
+        {
+            'items': items,
+            'locations': locations,
+            'current_location': location,
+            'current_location_pk': loc,
+        },
+        context_instance=RequestContext(request))
     return object_list(
             request,
             queryset=Item.objects.all(),

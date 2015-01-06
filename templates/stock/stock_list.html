@@ -3,20 +3,37 @@
 
 {% block extrahead %}
 <link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+
+<script>
+$(function(){
+$('#locations').val({{current_location_pk}});
+$('#locations').change(function(){
+    window.location.replace('?location='+$(this).val());
+});
+});
+
+</script>
 {% endblock %}
-{% block header %}Stock list{% endblock %}
+{% block header %}Stock list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
 
 {% block toplinks %}
-<div><a href="{% url stock_newitem %}" class="addbutton">add new</a></div>
+<div style="float: left;">
+    <select id="locations">
+        <option value='' default=true>Select location</option>
+        {% for location in locations %}
+            <option value={{ location.pk }}>{{ location.name }}</value>
+        {% endfor %}
+    </select>
+</div>
+<div style="float: right;"><a href="{% url stock_newitem %}" class="addbutton">add new</a></div>
 {% endblock %}
 
 {% block body %}
-    {% autopaginate object_list 20 %}
+    {% autopaginate items 20 %}
     {% paginate %}
 <table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
 <thead>
 <tr>
-    <th>edit</th>
     <th class='sort-alpha'>Item</th>
     <th class='sort-alpha'>Qty</th>
     <th class='sort-alpha'>Cost Price</th>
@@ -24,13 +41,12 @@
 </tr>
 </thead>
 <tbody>
-        {% for stock in object_list %}
+        {% for stock in items %}
             <tr class={% cycle "even" "odd" %}>
-                <td><a href="{% url stock_edititem id=stock.id %}">edit</a></td>
-                <td>{{ stock.description }} ({{ stock.code }})</td>
-                <td>{{ stock.quantity }}</td>
-                <td>{{ stock.cost_price }}</td>
-                <td>{{ stock.selling_price }}</td>
+                <td>{{ stock.0 }}</td>
+                <td>{{ stock.1 }}</td>
+                <td>{{ stock.2 }}</td>
+                <td>{{ stock.3 }}</td>
             </tr>
         {% empty %}
         No items to display
@@ -38,7 +54,7 @@
 </tbody>
 <tfoot>
     <tr>
-        <td>Count: {{ object_list|length }}</td>
+        <td>Count: {{ items|length }}</td>
         <td colspan=4></td>
     </tr>
 </tfoot>
