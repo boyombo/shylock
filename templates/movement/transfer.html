@@ -16,16 +16,12 @@
       {{ form.quantity.label_tag }}: {{ form.quantity }}
       </li>
       <li>
-      {{ form.from_location.errors }}
-      {{ form.from_location.label_tag }}: {{ form.from_location }}
+      {{ form.source.errors }}
+      {{ form.source.label_tag }}: {{ form.source }}
       </li>
      <li>
-      {{ form.to_location.errors }}
-      {{ form.to_location.label_tag }}: {{ form.to_location }}
-      </li>
-    <li>
-      {{ form.date.errors }}
-      {{ form.date.label_tag }}: {{ form.date }}
+      {{ form.destination.errors }}
+      {{ form.destination.label_tag }}: {{ form.destination }}
       </li>
       <div class='submit'><input type="SUBMIT" value="Submit" /></div>
  </form>
