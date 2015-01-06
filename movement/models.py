@@ -72,14 +72,16 @@ class Return(models.Model):
         self.item.quantity += self.quantity
         self.item.save()
         super(Return, self).delete()
-#
-#class Transfer(models.Model):
-#    item = models.ForeignKey(Item)
-#    quantity = models.FloatField()
-#    from_location = models.ForeignKey(Location, related_name='transfer_from')
-#    to_location = models.ForeignKey(Location, related_name='transfer_to')
-#    date = models.DateField(default=datetime.now)
-#    user = models.ForeignKey(User, editable=False)
-#
-#    class Meta:
-#        ordering = ('-date',)
+
+
+class Transfer(models.Model):
+    item = models.ForeignKey(Item)
+    quantity = models.FloatField()
+    source = models.ForeignKey(Location, related_name='transfer_source')
+    destination = models.ForeignKey(
+        Location, related_name='transfer_destination')
+    when = models.DateField(default=datetime.now)
+    user = models.ForeignKey(User, editable=False)
+
+    class Meta:
+        ordering = ('-when',)
