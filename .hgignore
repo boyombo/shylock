@@ -6,4 +6,5 @@ syntax: glob
 *.db
 *.orig
 *.db
+*.log
 local_settings.*
