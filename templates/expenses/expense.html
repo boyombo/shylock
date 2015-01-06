@@ -17,6 +17,10 @@ $(document).ready(function(){
       {{ form.description.label_tag }} {{ form.description }}
       </li>
       <li>
+      {{ form.location.errors }}
+      {{ form.location.label_tag }} {{ form.location }}
+      </li>
+      <li>
       {{ form.category.errors }}
       {{ form.category.label_tag }} {{ form.category }}
       </li>
