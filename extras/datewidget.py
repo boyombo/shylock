@@ -17,7 +17,8 @@ class DateTimeWidget(widgets.DateInput):
             'all': ('css/jquery-ui-themeroller.css',)
                 }
         js = ('js/jquery.form.js','js/ui.datepicker.js', 'js/calendar-init.js')
-        
+
     def __init__(self, attrs={}):
         attrs['class'] = 'vDateField'
-        super(DateTimeWidget, self).__init__(attrs, format='%d/%m/%Y')
+        super(DateTimeWidget, self).__init__(attrs, format='%Y-%m-%d')
+        #super(DateTimeWidget, self).__init__(attrs, format='%d/%m/%Y')

@@ -111,7 +111,7 @@ INSTALLED_APPS = (
 
 LOGIN_REDIRECT_URL = '/'
 # Number of items displayed per page for object_list pagination:
-ITEMS_PER_PAGE = 5
+ITEMS_PER_PAGE = 50
 #Max size of the employee photos
 PHOTO_MAX_SIZE = 100,100
 INVOICE_NUMBER_WIDTH = 3

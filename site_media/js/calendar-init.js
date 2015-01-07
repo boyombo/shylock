@@ -2,7 +2,7 @@ $(function() {
 	$('.vDateField').datepicker({
 		speed: 'fast',
 		showStatus: true,
-		dateFormat: 'd/m/yy',
+		dateFormat: 'yy-mm-dd',
 		yearRange: '-100:0'
 	})
 })
