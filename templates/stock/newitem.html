@@ -29,6 +29,10 @@ $(document).ready(function(){
       {{ form.quantity.label_tag }} {{ form.quantity }}
       </li>
       <li>
+      {{ form.location.errors }}
+      {{ form.location.label_tag }} {{ form.location }}
+      </li>
+      <li>
       {{ form.cost_price.errors }}
       {{ form.cost_price.label_tag }} {{ form.cost_price }}
       </li>
