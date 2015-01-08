@@ -8,7 +8,7 @@ from datetime import date
 
 class ReceptionForm(forms.ModelForm):
     date = forms.DateField(
-        widget=DateTimeWidget, initial=date.today, input_formats=['%d/%m/%Y'])
+        widget=DateTimeWidget, initial=date.today)
 
     class Meta:
         model = Reception
