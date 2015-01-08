@@ -113,6 +113,10 @@ def newitem(request, id=None, next='stock_newitem'):
     if request.method == 'POST':
         form = ItemForm(request.POST, instance=item)
         if form.is_valid():
+            location = form.cleaned_data.pop('location')
+            item = form.save()
+            qty = form.cleaned_data['quantity']
+            Stock.objects.create(location=location, item=item, quantity=qty)
             messages.info(request, 'Your item has been saved')
             return redirect(next)
     else:
