@@ -24,7 +24,7 @@ Expenses
             <td>{{ expense.location }}</td>
             <td>{{ expense.category }}</td>
             <td>{{ expense.amount }}</td>
-            <td>{{ expense.date }}</td>
+            <td>{{ expense.date|date:"jS b Y" }}</td>
         </tr>
     {% empty %}
     No expense categories to display.
