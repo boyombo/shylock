@@ -1,5 +1,12 @@
 from django import forms
 from stock.models import Item, Category, Location
+from supplier.models import Supplier
+
+
+class SupplierForm(forms.ModelForm):
+
+    class Meta:
+        model = Supplier
 
 
 class LocationForm(forms.ModelForm):
