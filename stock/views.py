@@ -1,7 +1,8 @@
 from django.views.generic.list_detail import object_list
 from django.shortcuts import render_to_response, redirect, get_object_or_404
+from supplier.models import Supplier
 from stock.models import Item, Category, Location, Stock
-from stock.forms import ItemForm, CategoryForm, LocationForm
+from stock.forms import ItemForm, CategoryForm, LocationForm, SupplierForm
 from django.db.models import Q
 from django.conf import settings
 from django.core import serializers
@@ -36,6 +37,33 @@ def newlocation(request, pk=None):
         form = LocationForm(instance=location)
     return render_to_response('stock/newlocation.html', {'form': form},
                               context_instance=RequestContext(request))
+
+
+def stock_suppliers(request):
+    return object_list(
+        request,
+        queryset=Supplier.objects.all(),
+        allow_empty=True,
+        template_name='stock/supplier_list.html'
+    )
+
+
+def newsupplier(request, id=None):
+    if id:
+        supplier = get_object_or_404(Supplier, pk=id)
+    else:
+        supplier = None
+    if request.method == 'POST':
+        form = SupplierForm(request.POST, instance=supplier)
+        if form.is_valid():
+            supplier = form.save()
+            messages.info(request, 'Your supplier has been saved')
+            return redirect('stock_suppliers')
+    else:
+        form = SupplierForm(instance=supplier)
+    return render_to_response(
+        'stock/newsupplier.html', {'form': form},
+        context_instance=RequestContext(request))
 
 
 def stock_categories(request):
