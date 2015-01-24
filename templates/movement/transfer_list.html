@@ -1,53 +1,67 @@
-{% extends "movement/base.html" %}
-{% block htmlhead %}
+{% extends "stock/base.html" %}
+{% load pagination_tags %}
 
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+
+<script>
+$(function(){
+$('#locations').val({{current_location_pk}});
+$('#locations').change(function(){
+    window.location.replace('?location='+$(this).val());
+});
+});
+
+</script>
 {% endblock %}
-{% block body %}
-<!--pager-->
-<div class='pager'>
-<span>
-{% if has_previous %}
-<a href='/movement/transfer/?page={{ previous }}/'><< back</a>
-{% endif %}
-</span>
-<span>
-Page {{ page }} of {{ pages }}
-</span>
-<span>
-{% if has_next %}
-<a href='/movement/transfer/?page={{ next }}/'>Next >></a>
-{% endif %}
-</span>
+{% block header %}Stock list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
+
+{% block toplinks %}
+<div style="float: left;">
+    <select id="locations">
+        <option value='' default=true>Select location</option>
+        {% for location in locations %}
+            <option value={{ location.pk }}>{{ location.name }}</value>
+        {% endfor %}
+    </select>
 </div>
-<!--end pager-->
-{% if transfer_list %}
+<div style="float: right;"><a href="{% url movement_transfer %}" class="addbutton">add new</a></div>
+{% endblock %}
+
+{% block body %}
+    {% autopaginate object_list 50 %}
+    {% paginate %}
 <table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
 <thead>
 <tr>
     <th class='sort-alpha'>Item</th>
     <th class='sort-alpha'>Qty</th>
-    <th class='sort-alpha'>From</th>
-    <th class='sort-alpha'>To</th>
-    <th class='sort-alpha'>Date</th>
+    <th class='sort-alpha'>Source</th>
+    <th class='sort-alpha'>Destination</th>
+    <th class='sort-alpha'>When</th>
     <th class='sort-alpha'>User</th>
 </tr>
 </thead>
 <tbody>
-    {% if transfer_list %}
-        {% for transfer in transfer_list %}
-            <tr>
-                <td>{{ transfer.item.name }}</td>
+        {% for transfer in object_list %}
+            <tr class={% cycle "even" "odd" %}>
+                <td>{{ transfer.item }}</td>
                 <td>{{ transfer.quantity }}</td>
-                <td>{{ transfer.from_location }}</td>
-                <td>{{ transfer.to_location }}</td>
-                <td>{{ transfer.date|date:"d/m/Y" }}</td>
-                <td>{{ transfer.user.username }}</td>
+                <td>{{ transfer.source }}</td>
+                <td>{{ transfer.destination }}</td>
+                <td>{{ transfer.when }}</td>
+                <td>{{ transfer.user }}</td>
             </tr>
+        {% empty %}
+        No items to display
         {% endfor %}
-    {% endif %}
 </tbody>
+<tfoot>
+    <tr>
+        <td>Count: {{ items|length }}</td>
+        <td colspan=5></td>
+    </tr>
+</tfoot>
 </table>
-{% else %}
-No transfers
-{% endif %}
+<br />
 {% endblock %}

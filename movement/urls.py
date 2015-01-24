@@ -7,6 +7,7 @@ urlpatterns = patterns('movement.views',
         url(r'receive/$', 'receive', name='movement_receive'),
         #url(r'returns/$', 'return_list', name='movement_return_list'),
         url(r'return_item/$', 'return_items', name='movement_return'),
+        url(r'transfers/$', 'transfer_list', name='movement_transfers'),
         url(r'transfer_item/$', 'transfer_items', name='movement_transfer'),
         )
 

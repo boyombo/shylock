@@ -30,11 +30,16 @@ Released   : 20071220
 	{% endif %}
 	<div id="menu">
 		<ul>
+            {% if user.is_superuser %}
+            <li><a href="{% url user_list %}">Users</a> </li>                   
+            {% endif %}
             {% if user.is_authenticated %}
             <li><a href="{% url stock_list %}">Stock</a> </li>                   
             <li><a href="{% url sale_new %}">Sales</a></li>
             <li><a href="{% url expense_list %}">Expenses</a></li>
+            {% if user.is_superuser %}
             <li><a href="{% url accounting_pandl %}">Report</a></li>
+            {% endif %}
 			{% else %}
 			<li class="active"><a href="{% url site_login %}">Login</a></li>
 			{% endif %}

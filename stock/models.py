@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Category(models.Model):
@@ -47,30 +48,12 @@ class Stock(models.Model):
     def __unicode__(self):
         return unicode(self.item)
 
-#    def get_quantity(self):
-#        qty = self.locationitems_set.aggregate(models.Sum('quantity'))
-#        return qty['quantity__sum']
-#    quantity = property(fget=get_quantity)
-#
-#class Location(models.Model):
-#    SHOP = 0
-#    WAREHOUSE = 1
-#    LOCATION_TYPES = ((SHOP, 'Shop'),(WAREHOUSE, 'Warehouse'),)
-#    name = models.CharField(max_length=50, unique=True)
-#    type = models.PositiveIntegerField(choices=LOCATION_TYPES)
-#    items = models.ManyToManyField(Item, through='LocationItems')
-#
-#    def __unicode__(self):
-#        return self.name
-#
-#class LocationItems(models.Model):
-#    item = models.ForeignKey(Item)
-#    location = models.ForeignKey(Location)
-#    quantity = models.FloatField()
-#
-#    class Meta:
-#        verbose_name_plural = 'Stock'
-#
-#    def __unicode__(self):
-#        return '%d units of %s at %s' % (self.quantity, self.item.name, self.location.name)
-#
+
+class UserAccount(models.Model):
+    user = models.ForeignKey(User)
+    location = models.ForeignKey(Location, null=True, blank=True)
+    read_only = models.BooleanField()
+    active = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return self.user.username
