@@ -51,7 +51,7 @@ class TransferForm(forms.ModelForm):
                 dest_stock = Stock.objects.get(location=dest, item=item)
             except Stock.DoesNotExist:
                 dest_stock = Stock.objects.create(
-                    location=dest, item=item, quantity=qty)
+                    location=dest, item=item, quantity=0)
 
             source_stock.quantity -= qty
             dest_stock.quantity += qty
