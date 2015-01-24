@@ -1,7 +1,9 @@
-<li><a href="{% url stock_categories %}">Categories</a></li>
-<li><a href="{% url stock_locations %}">Location</a></li>
+{% if user.is_superuser %}
+  <li><a href="{% url stock_categories %}">Categories</a></li>
+  <li><a href="{% url stock_locations %}">Location</a></li>
+  <li><a href="{% url stock_suppliers %}">Suppliers</a></li>
+  <li><a href="{% url movement_reception_list %}">Receptions</a></li>
+  <li><a href="{% url movement_return_list %}">Returns</a></li>
+{% endif %}
 <li><a href="{% url stock_list %}">Stock</a></li>
-<li><a href="{% url stock_suppliers %}">Suppliers</a></li>
-<li><a href="{% url movement_transfer %}">Transfer</a></li>
-<li><a href="{% url movement_reception_list %}">Receptions</a></li>
-<li><a href="{% url movement_return_list %}">Returns</a></li>
+<li><a href="{% url movement_transfers %}">Transfers</a></li>

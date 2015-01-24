@@ -1,0 +1,39 @@
+{% extends "stock/base.html" %}
+{% block extrahead %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('#id_name').focus();
+ });
+</script>
+{{ form.media }}
+{% endblock %}
+{% block header %}New User Account{% endblock %}
+{% block body %}
+
+<form method="POST" action=".">{% csrf_token %} 
+  <ul>
+      {{ form.non_field_errors }}
+      <li>
+      {{ form.user_name.errors }}
+      {{ form.user_name.label_tag }} {{ form.user_name }}
+      </li>
+      <li>
+      {{ form.password1.errors }}
+      {{ form.password1.label_tag }} {{ form.password1 }}
+      </li>
+      <li>
+      {{ form.password2.errors }}
+      {{ form.password2.label_tag }} {{ form.password2 }}
+      </li>
+      <li>
+      {{ form.readonly.errors }}
+      {{ form.readonly.label_tag }} {{ form.readonly }}
+      </li>
+      <li>
+      {{ form.location.errors }}
+      {{ form.location.label_tag }} {{ form.location }}
+      </li>
+      </ul>
+  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}

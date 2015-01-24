@@ -1,16 +1,35 @@
 from django.views.generic.list_detail import object_list
 from django.shortcuts import render_to_response, redirect, get_object_or_404
-from supplier.models import Supplier
-from stock.models import Item, Category, Location, Stock
-from stock.forms import ItemForm, CategoryForm, LocationForm, SupplierForm
 from django.db.models import Q
 from django.conf import settings
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.template import Template
-from django.template.context import Context, RequestContext
+from django.template.context import RequestContext
 from django.template.loader import render_to_string
 from django.contrib import messages
+from django.contrib.auth.decorators import user_passes_test
+
+from supplier.models import Supplier
+from stock.models import Item, Category, Location, Stock, UserAccount
+from stock.forms import ItemForm, CategoryForm, LocationForm,\
+    SupplierForm, UserAccountForm, EditUserForm
+
+
+def is_superuser(user):
+    return user.is_superuser
+
+
+def not_readonly(user):
+    if user.is_superuser:
+        return True
+    accts = user.useraccount_set.all()
+    if not accts:
+        # Not created here
+        return False
+    acct = accts[0]
+    if not acct.read_only:
+        return True
+    return False
 
 
 def stock_locations(request):
@@ -22,6 +41,7 @@ def stock_locations(request):
     )
 
 
+@user_passes_test(is_superuser)
 def newlocation(request, pk=None):
     if pk:
         location = get_object_or_404(Location, pk=pk)
@@ -39,6 +59,50 @@ def newlocation(request, pk=None):
                               context_instance=RequestContext(request))
 
 
+@user_passes_test(is_superuser)
+def stock_users(request):
+    return object_list(
+        request,
+        queryset=UserAccount.objects.all(),
+        allow_empty=True,
+        template_name='stock/user_list.html'
+    )
+
+
+@user_passes_test(is_superuser)
+def newuser(request):
+    if request.method == 'POST':
+        form = UserAccountForm(request.POST)
+        if form.is_valid():
+            user = form.cleaned_data['user_name']
+            readonly = form.cleaned_data['readonly']
+            location = form.cleaned_data['location']
+            UserAccount.objects.create(
+                user=user, location=location, read_only=readonly)
+            messages.info(request, 'Account %s has been saved' % user.username)
+            return redirect('user_list')
+    else:
+        form = UserAccountForm()
+    return render_to_response('stock/newuser.html', {'form': form},
+                              context_instance=RequestContext(request))
+
+
+@user_passes_test(is_superuser)
+def edituser(request, pk):
+    usr = get_object_or_404(UserAccount, pk=pk)
+    if request.method == 'POST':
+        form = EditUserForm(request.POST, instance=usr)
+        if form.is_valid():
+            form.save()
+            return redirect('user_list')
+    else:
+        form = EditUserForm(instance=usr)
+    return render_to_response(
+        'stock/edit_user.html',
+        {'form': form, 'usr': usr},
+        context_instance=RequestContext(request))
+
+
 def stock_suppliers(request):
     return object_list(
         request,
@@ -48,6 +112,7 @@ def stock_suppliers(request):
     )
 
 
+@user_passes_test(is_superuser)
 def newsupplier(request, id=None):
     if id:
         supplier = get_object_or_404(Supplier, pk=id)
@@ -66,6 +131,7 @@ def newsupplier(request, id=None):
         context_instance=RequestContext(request))
 
 
+@user_passes_test(is_superuser)
 def stock_categories(request):
     return object_list(
         request,
@@ -75,6 +141,7 @@ def stock_categories(request):
     )
 
 
+@user_passes_test(is_superuser)
 def newcategory(request, id=None):
     if id:
         category = get_object_or_404(Category, pk=id)
@@ -133,6 +200,7 @@ def stock_list(request):
         )
 
 
+@user_passes_test(is_superuser)
 def newitem(request, id=None, next='stock_newitem'):
     if id:
         item = get_object_or_404(Item, pk=id)

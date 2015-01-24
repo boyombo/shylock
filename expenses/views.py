@@ -1,12 +1,17 @@
 from django.views.generic.list_detail import object_list
 from expenses.models import Category, Expense
 from expenses.forms import ExpenseForm
+from stock.views import not_readonly
 from extras.daterange import DateRangeForm
 from django.conf import settings
 from django.shortcuts import render_to_response, redirect
 from django.template.context import RequestContext
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import user_passes_test
 from datetime import date, timedelta
+
+
+def is_superuser(user):
+    return user.is_superuser
 
 
 def list_categories(request):
@@ -55,6 +60,8 @@ def list_expense(request):
             extra_context={'form': form, 'start':start_date, 'end':end_date}
             )
 
+
+@user_passes_test(not_readonly)
 def new_expense(request):
     if request.method == 'POST':
         form = ExpenseForm(request.POST)

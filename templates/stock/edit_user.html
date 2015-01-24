@@ -1,0 +1,34 @@
+{% extends "stock/base.html" %}
+{% block extrahead %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('#id_name').focus();
+ });
+</script>
+{{ form.media }}
+{% endblock %}
+{% block header %}Edit User Account{% endblock %}
+{% block body %}
+
+<form method="POST" action=".">{% csrf_token %} 
+  <ul>
+      {{ form.non_field_errors }}
+      <li>
+      <label>User:</label> <strong>{{ usr.user }}</strong>
+      </li>
+      <li>
+      {{ form.read_only.errors }}
+      {{ form.read_only.label_tag }} {{ form.read_only }}
+      </li>
+      <li>
+      {{ form.location.errors }}
+      {{ form.location.label_tag }} {{ form.location }}
+      </li>
+      <li>
+      {{ form.active.errors }}
+      {{ form.active.label_tag }} {{ form.active }}
+      </li>
+      </ul>
+  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}
