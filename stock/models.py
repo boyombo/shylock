@@ -53,7 +53,7 @@ class UserAccount(models.Model):
     user = models.ForeignKey(User)
     location = models.ForeignKey(Location, null=True, blank=True)
     read_only = models.BooleanField()
-    active = models.BooleanField(default=True)
+    #active = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.user.username

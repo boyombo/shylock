@@ -63,6 +63,9 @@ class EditUserForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EditUserForm, self).__init__(*args, **kwargs)
+        user = kwargs['instance'].user
+        self.fields['active'] = forms.BooleanField(
+            required=False, initial=user.is_active)
         #self.fields['user'] = kwargs['instance'].user
 
 
