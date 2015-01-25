@@ -93,6 +93,8 @@ def edituser(request, pk):
     if request.method == 'POST':
         form = EditUserForm(request.POST, instance=usr)
         if form.is_valid():
+            usr.user.is_active = form.cleaned_data['active']
+            usr.user.save()
             form.save()
             return redirect('user_list')
     else:
