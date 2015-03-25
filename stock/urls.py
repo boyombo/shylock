@@ -7,6 +7,18 @@ urlpatterns = patterns(
     url(r'edititem/(?P<id>\d+)/$', 'newitem',
         {'next': 'stock_list'}, name='stock_edititem'),
 
+    url(r'serials/$', 'serial_list', name='serial_list'),
+    url(r'newserial/$', 'newserial', name='serial_newitem'),
+    url(r'serial_cat/$', 'stock_categories',
+        {'template_name': 'stock/serial_category_list.html'},
+        name='serial_categories'),
+    url(r'new_serial_category/$', 'newcategory',
+        {
+            'next': 'serial_categories',
+            'template_name': 'stock/new_serial_category.html'
+        },
+        name='serial_newcategory'),
+
     url(r'suppliers/$', 'stock_suppliers', name='stock_suppliers'),
     url(r'newsupplier/$', 'newsupplier', name='stock_newsupplier'),
     url(r'editsupplier/(?P<id>\d+)/$',

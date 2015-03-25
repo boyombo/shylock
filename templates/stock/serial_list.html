@@ -1,0 +1,73 @@
+{% extends "stock/base_serial.html" %}
+{% load pagination_tags %}
+{% load humanize %}
+
+{% block extrahead %}
+<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+
+{% endblock %}
+{% block header %}Serial list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
+
+{% block toplinks %}
+<div style="float: left;">
+</div>
+<div style="float: right;"><a href="{% url serial_newitem %}" class="addbutton">add new</a></div>
+{% endblock %}
+
+{% block body %}
+    {% autopaginate items 20 %}
+    {% paginate %}
+<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
+<thead>
+<tr>
+    <th class='sort-alpha'>Category</th>
+    <th class='sort-alpha'>Number</th>
+    <th class='sort-alpha'>Location</th>
+    <th class='sort-alpha'>Cost Price</th>
+    <th class='sort-alpha'>Selling Price</th>
+    <th class='sort-alpha'>Sale Date</th>
+    <th class='sort-alpha'>Customer</th>
+    <th class='sort-alpha'>Status</th>
+</tr>
+</thead>
+<tbody>
+        {% for item in items %}
+            <tr class={% cycle "even" "odd" %}>
+                <td>{{ item.category }}</td>
+                <td>{{ item.serial_number }}</td>
+                <td>{{ item.location }}</td>
+                <td>{{ item.cost_price|intcomma }}</td>
+                <td>{{ item.selling_price|intcomma }}</td>
+                <td>{{ item.sale_date }}</td>
+                <td>{{ item.customer }}</td>
+                <td>
+                    {% if item.sale_date %}
+                        Sold
+                    {% else %}
+                    <a href="#">In Stock</a>
+                    {% endif %}
+                </td>
+            </tr>
+        {% empty %}
+        No items to display
+        {% endfor %}
+</tbody>
+<tfoot>
+    <tr>
+        <td><strong>In-Stock</strong></td>
+        <td colspan=1>Count: {{ instock_count }}</td>
+        <td colspan=3>Cost price: {{ instock_cost|intcomma }}</td>
+        <td colspan=3>Selling price: {{ instock_selling|intcomma }}</td>
+    </tr>
+    <tr>
+        <td><strong>Sold</strong></td>
+        <td colspan=1>Count: {{ sold_count }}</td>
+        <td colspan=3>Cost price: {{ sold_cost|intcomma }}</td>
+        <td colspan=3>Selling price: {{ sold_selling|intcomma }}</td>
+    </tr>
+</tfoot>
+</table>
+<br />
+<script type="text/javascript">
+</script>
+{% endblock %}

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
-from django.db import IntegrityError
-from stock.models import Item, Category, Location, UserAccount
+#from django.db import IntegrityError
+from stock.models import Item, Category, Location, UserAccount, SerialItem
 from supplier.models import Supplier
 
 
@@ -83,3 +83,10 @@ class ItemForm(forms.ModelForm):
 
     class Meta:
         model = Item
+
+
+class SerialForm(forms.ModelForm):
+
+    class Meta:
+        exclude = ('sale_date', 'customer')
+        model = SerialItem
