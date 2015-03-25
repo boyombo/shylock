@@ -1,5 +1,5 @@
 from django.contrib import admin
-from stock.models import Item, Category, Location, Stock
+from stock.models import Item, Category, Location, Stock, SerialItem
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -20,7 +20,13 @@ class ItemAdmin(admin.ModelAdmin):
     search_fields = ('code', 'category')
 
 
+class SerialItemAdmin(admin.ModelAdmin):
+    list_display = ('category', 'serial_number', 'location', 'cost_price',
+                    'selling_price', 'sale_date', 'customer')
+
+
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Item, ItemAdmin)
+admin.site.register(SerialItem, SerialItemAdmin)

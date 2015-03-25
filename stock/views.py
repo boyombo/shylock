@@ -1,6 +1,7 @@
 from django.views.generic.list_detail import object_list
 from django.shortcuts import render_to_response, redirect, get_object_or_404
 from django.db.models import Q
+from django.db.models.aggregates import Sum
 from django.conf import settings
 from django.core import serializers
 from django.http import HttpResponse, HttpResponseBadRequest
@@ -10,9 +11,10 @@ from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
 
 from supplier.models import Supplier
-from stock.models import Item, Category, Location, Stock, UserAccount
+from stock.models import Item, Category, Location, Stock, UserAccount,\
+    SerialItem
 from stock.forms import ItemForm, CategoryForm, LocationForm,\
-    SupplierForm, UserAccountForm, EditUserForm
+    SupplierForm, UserAccountForm, EditUserForm, SerialForm
 
 
 def is_superuser(user):
@@ -134,17 +136,18 @@ def newsupplier(request, id=None):
 
 
 @user_passes_test(is_superuser)
-def stock_categories(request):
+def stock_categories(request, template_name='stock/category_list.html'):
     return object_list(
         request,
         queryset=Category.objects.all(),
         allow_empty=True,
-        template_name='stock/category_list.html'
+        template_name=template_name
     )
 
 
 @user_passes_test(is_superuser)
-def newcategory(request, id=None):
+def newcategory(request, id=None, next='stock_categories',
+                template_name='stock/newcategory.html'):
     if id:
         category = get_object_or_404(Category, pk=id)
     else:
@@ -154,11 +157,11 @@ def newcategory(request, id=None):
         if form.is_valid():
             category = form.save()
             messages.info(request, 'Your category has been saved')
-            return redirect('stock_categories')
+            return redirect(next)
     else:
         form = CategoryForm(instance=category)
     return render_to_response(
-        'stock/newcategory.html', {'form': form},
+        template_name, {'form': form},
         context_instance=RequestContext(request))
 
 
@@ -195,11 +198,51 @@ def stock_list(request):
         },
         context_instance=RequestContext(request))
     return object_list(
-            request,
-            queryset=Item.objects.all(),
-            allow_empty=True,
-            template_name='stock/stock_list.html',
-        )
+        request,
+        queryset=Item.objects.all(),
+        allow_empty=True,
+        template_name='stock/stock_list.html',
+    )
+
+
+def serial_list(request):
+    serials = SerialItem.objects.all()
+    instock_count = serials.filter(sale_date__isnull=True).count() or 0
+    sold_count = serials.filter(sale_date__isnull=False).count() or 0
+    instock_cost = serials.filter(sale_date__isnull=True).aggregate(
+        Sum('cost_price'))['cost_price__sum'] or 0
+    sold_cost = serials.filter(sale_date__isnull=False).aggregate(
+        Sum('cost_price'))['cost_price__sum'] or 0
+    instock_selling = serials.filter(sale_date__isnull=True).aggregate(
+        Sum('selling_price'))['selling_price__sum'] or 0
+    sold_selling = serials.filter(sale_date__isnull=False).aggregate(
+        Sum('selling_price'))['selling_price__sum'] or 0
+    return render_to_response(
+        'stock/serial_list.html',
+        {
+            'items': SerialItem.objects.all(),
+            'instock_count': instock_count,
+            'sold_count': sold_count,
+            'instock_cost': instock_cost,
+            'sold_cost': sold_cost,
+            'instock_selling': instock_selling,
+            'sold_selling': sold_selling,
+        },
+        context_instance=RequestContext(request))
+
+
+def newserial(request, id=None, next='serial_newitem'):
+    if request.method == 'POST':
+        form = SerialForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect(next)
+    else:
+        form = SerialForm()
+    return render_to_response(
+        'stock/newserial.html',
+        {'form': form},
+        context_instance=RequestContext(request))
 
 
 @user_passes_test(is_superuser)

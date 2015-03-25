@@ -1,0 +1,38 @@
+{% extends "stock/base_serial.html" %}
+{% block extrahead %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('#id_code').focus();
+ });
+</script>
+{{ form.media }}
+{% endblock %}
+{% block header %}New Item{% endblock %}
+{% block body %}
+
+<form method="POST" action=".">{% csrf_token %} 
+  <ul>
+      <li>
+      {{ form.serial_number.errors }}
+      {{ form.serial_number.label_tag }} {{ form.serial_number }}
+      </li>
+      <li>
+      {{ form.category.errors }}
+      {{ form.category.label_tag }} {{ form.category }}
+      </li>
+      <li>
+      {{ form.location.errors }}
+      {{ form.location.label_tag }} {{ form.location }}
+      </li>
+      <li>
+      {{ form.cost_price.errors }}
+      {{ form.cost_price.label_tag }} {{ form.cost_price }}
+      </li>
+      <li>
+      {{ form.selling_price.errors }}
+      {{ form.selling_price.label_tag }} {{ form.selling_price }}
+      </li>
+      </ul>
+  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
+ </form>
+{% endblock %}

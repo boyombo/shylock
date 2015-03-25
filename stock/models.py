@@ -57,3 +57,16 @@ class UserAccount(models.Model):
 
     def __unicode__(self):
         return self.user.username
+
+
+class SerialItem(models.Model):
+    category = models.ForeignKey(Category)
+    serial_number = models.CharField(max_length=20, unique=True)
+    location = models.CharField(max_length=200, blank=True)
+    cost_price = models.DecimalField(max_digits=10, decimal_places=2)
+    selling_price = models.DecimalField(max_digits=10, decimal_places=2)
+    sale_date = models.DateField(null=True, blank=True)
+    customer = models.ForeignKey('sale.Customer', null=True, blank=True)
+
+    def __unicode__(self):
+        return self.serial_number
