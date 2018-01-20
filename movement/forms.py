@@ -12,6 +12,7 @@ class ReceptionForm(forms.ModelForm):
 
     class Meta:
         model = Reception
+        exclude = []
 
 
 class ReturnForm(forms.ModelForm):
@@ -20,6 +21,7 @@ class ReturnForm(forms.ModelForm):
 
     class Meta:
         model = Return
+        exclude = []
 
 
 class TransferForm(forms.ModelForm):
@@ -27,6 +29,7 @@ class TransferForm(forms.ModelForm):
 
     class Meta:
         model = Transfer
+        exclude = []
 
     def clean(self):
         data = self.cleaned_data

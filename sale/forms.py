@@ -2,17 +2,19 @@ from sale.models import Invoice, Sale, Customer
 from stock.models import Item
 from django import forms
 
+
 class SaleForm(forms.ModelForm):
     item = forms.ModelChoiceField(queryset=Item.objects.all(), widget=forms.Select(attrs={'class':'formset-item'}))
     price = forms.DecimalField(widget=forms.TextInput(attrs={'class':'very-short', 'readonly':'readonly'}))
     quantity = forms.FloatField(widget=forms.TextInput(attrs={'class':'very-short'}))
-    
+
     class Meta:
         model = Sale
         exclude = ('invoice',)
 
+
 class InvoiceForm(forms.ModelForm):
-    
+
     class Meta:
         model = Invoice
         exclude = ('teller', 'date', 'customer')
@@ -26,10 +28,10 @@ class CustomerForm(forms.ModelForm):
         model = Customer
         exclude = ('address','phone')
 
+
 class SelectItemForm(forms.Form):
     item = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class':'long'}))
-    #session_key = forms.CharField(max_length=10, widget=forms.HiddenInput)
-    
+
     def clean_item(self):
         try:
             item = Item.objects.get(code__iexact=self.cleaned_data['item'])

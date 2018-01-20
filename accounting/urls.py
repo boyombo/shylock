@@ -1,7 +1,8 @@
-#!/usr/bin/env python
-from django.conf.urls.defaults import *
+from django.conf.urls import url
 
-urlpatterns = patterns('accounting.views',
-    url(r'pandl/$', 'pandl', name='accounting_pandl'),
-    url(r'graph/$', 'graph', name='accounting_graph'),
-)
+from accounting import views
+
+urlpatterns = [
+    url(r'pandl/$', views.pandl, name='accounting_pandl'),
+    url(r'graph/$', views.graph, name='accounting_graph'),
+]

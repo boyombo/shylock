@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-from django.conf.urls.defaults import *
+from django.conf.urls import url
+
+from expenses import views
 
 
-urlpatterns = patterns('expenses.views',
-    url(r'^$', 'new_expense', name='expense_new'),
-    url(r'categories/$', 'list_categories', name='category_list'),
-    url(r'list/$', 'list_expenses', name='expense_list'),
-)
+urlpatterns = [
+    url(r'^$', views.new_expense, name='expense_new'),
+    url(r'categories/$', views.CategoryList.as_view(), name='category_list'),
+    url(r'list/$', views.ExpensesList.as_view(), name='expense_list'),
+]
 
 #urlpatterns += patterns('simplereports.views',
 #        url(r'list/$', 'simple_list',

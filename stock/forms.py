@@ -9,12 +9,14 @@ class SupplierForm(forms.ModelForm):
 
     class Meta:
         model = Supplier
+        exclude = []
 
 
 class LocationForm(forms.ModelForm):
 
     class Meta:
         model = Location
+        exclude = []
 
 
 class UserAccountForm(forms.Form):
@@ -74,6 +76,7 @@ class CategoryForm(forms.ModelForm):
 
     class Meta:
         model = Category
+        exclude = []
 
 
 class ItemForm(forms.ModelForm):
@@ -83,6 +86,7 @@ class ItemForm(forms.ModelForm):
 
     class Meta:
         model = Item
+        exclude = []
 
 
 class SerialForm(forms.ModelForm):

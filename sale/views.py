@@ -1,8 +1,11 @@
-from sale.models import Customer, Sale, Cart, Invoice
+from django.shortcuts import render
+
+from sale.models import Customer, Sale, Cart, Invoice, get_next_invoice
 from stock.models import Item
 from sale.forms import InvoiceForm, SelectItemForm, CustomerForm
 from extras.daterange import DateRangeForm
-from django.views.generic.list_detail import object_list
+#from django.views.generic.list_detail import object_list
+from django.views.generic.list import ListView
 from django.conf import settings
 from django.contrib import messages
 from django.template.context import RequestContext
@@ -18,9 +21,13 @@ import json
 import logging
 import os
 
-LOGFILE = os.path.join(settings.PROJECT_DIR, 'logfile.log')
+LOGFILE = os.path.join(settings.BASE_DIR, 'logfile.log')
 FMT = '[%(asctime)s] %(levelname)s %(message)s'
 logging.basicConfig(filename=LOGFILE, level=logging.DEBUG, format=FMT)
+
+
+class CustomerListView(ListView):
+    model = Customer
 
 
 def customer_list(request):
@@ -88,40 +95,53 @@ def sale_new(request):
         logging.info('saved invoice')
         #import pdb;pdb.set_trace()
         for key, value in data.items():
-            sale = Sale.objects.create(
-                    invoice=invoice,
-                    item=items.get(code=key),
-                    quantity=float(value[0]))
+            Sale.objects.create(
+                invoice=invoice,
+                item=items.get(code=key),
+                quantity=float(value[0]))
         logging.info('sale successful')
         return HttpResponse('The sale is successful')
     else:
         form = InvoiceForm()
         itemform = SelectItemForm()
         customerform = CustomerForm()
-    return render_to_response(
-            'sale/sale.html',
-            {
-                'invoiceform': form,
-                'itemform': itemform,
-                'customerform': customerform,
-                'invoice_number': Invoice.objects.next_number,
-            },
-            context_instance=RequestContext(request))
+    next_invoice = get_next_invoice()
+    cntxt = {
+        'invoiceform': form,
+        'itemform': itemform,
+        'customerform': customerform,
+        'invoice_number': next_invoice
+    }
+    return render(request, 'sale/sale.html', cntxt)
+    #return render_to_response(
+    #        'sale/sale.html',
+    #        {
+    #            'invoiceform': form,
+    #            'itemform': itemform,
+    #            'customerform': customerform,
+    #            'invoice_number': Invoice.objects.next_number,
+    #        },
+    #        context_instance=RequestContext(request))
+
 
 def get_price(request):
-    item_id = request.GET.get('item','')
+    item_id = request.GET.get('item', '')
     item = get_object_or_404(Item, pk=item_id)
-    return HttpResponse(u'%s'%item.selling_price)
+    return HttpResponse(u'{}'.format(item.selling_price))
+
 
 def customer_complete(request):
-    q = request.GET.get('q','')
-    result = ''.join([u'%s|%s\n'%(c.name, c.id) for c in Customer.objects.filter(name__icontains=q)])
+    qset = Customer.objects.filter(name__icontains=request.GET.get('q', ''))
+    result = ''.join(['{}|{}\n'.format(c.name, c.id) for c in qset])
     return HttpResponse(result)
 
+
 def item_complete(request):
-    q = request.GET.get('q','')
-    result = ''.join([u'%s|%s\n'%(i.description, i.id) for i in Item.objects.filter(Q(description__icontains=q)|Q(code__icontains=q))])
+    q = request.GET.get('q', '')
+    qset = Item.objects.filter(Q(description__icontains=q) | Q(code__icontains=q))
+    result = ''.join([u'{}|{}\n'.format(i.description, i.id) for i in qset])
     return HttpResponse(result)
+
 
 def add_to_cart(form, ajax=False):
     '''get the details of an item
@@ -140,9 +160,11 @@ def add_to_cart(form, ajax=False):
         item_dict = [(item) for item in cart.item]
         return cart.item
 
+
 def delete_cart(session):
     id = session.pop('cart_id')
     Cart.objects.filter(session_key=id).delete()
+
 
 def json_api(request):
     data = {'text': 'ok'}

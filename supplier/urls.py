@@ -1,10 +1,7 @@
-from django.conf.urls.defaults import *
+from django.conf.urls import url
 
-urlpatterns = patterns('simplereports.views',
-        url(r'list/$', 'simple_list',
-            {
-                'app_label': 'supplier',
-                'model_name': 'supplier',
-                'template_name': 'supplier/supplier_list.html'
-            }, name='supplier_list'),
-        )
+from supplier import views
+
+urlpatterns = [
+    url(r'list/$', views.SupplierListView.as_view(), name='supplier_list'),
+]

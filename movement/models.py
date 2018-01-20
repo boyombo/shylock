@@ -1,9 +1,10 @@
+from __future__ import unicode_literals
+
 from django.db import models
 from django.contrib.auth.models import User
 from supplier.models import Supplier
 from stock.models import Item, Location, Stock
 from datetime import datetime
-from extras.daterange import MyDateField
 
 
 class Reception(models.Model):

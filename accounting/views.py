@@ -1,7 +1,6 @@
 from sale.models import Sale, CostOfSale
 from expenses.models import Expense, Category
-from django.shortcuts import render_to_response
-from django.template.context import RequestContext
+from django.shortcuts import render
 from django.db.models.aggregates import Sum, Max
 from django.conf import settings
 from extras.daterange import DateRangeForm
@@ -10,13 +9,16 @@ from decimal import Decimal
 from collections import defaultdict
 import os
 
+
 def get_default_dates():
     end_date = date.today()
     start_date = end_date - timedelta(7)
     return start_date, end_date
 
+
 def pandl(request):
-    if request.GET.has_key('start'):
+    start = request.GET.get('start', None)
+    if start:
         form = DateRangeForm(request.GET)
         if form.is_valid():
             start_date = form.cleaned_data['start']
@@ -45,20 +47,21 @@ def pandl(request):
                 'net_percent': (sales - cost_of_sales - expenses)*100/sales,
             }
             )
-    return render_to_response('accounting/pandl.html',
-        {
-            'form': form,
-            'pl': pl,
-            'start': start_date,
-            'end': end_date,
-        },
-        context_instance=RequestContext(request))
+    cntxt = {
+        'form': form,
+        'pl': pl,
+        'start': start_date,
+        'end': end_date,
+    }
+    return render(request, 'accounting/pandl.html', cntxt)
+
 
 def graph(request):
     """show the sales, cos, exp, profits on a date graph
     """
     start_date, end_date = get_default_dates()
-    if request.GET.has_key('start'):
+    _start = request.GET.get('start', None)
+    if _start:
         form = DateRangeForm(request.GET)
         if form.is_valid():
             start_date = form.cleaned_data['start']
@@ -72,21 +75,21 @@ def graph(request):
     #import pdb;pdb.set_trace()
     data = plot_jslinegraph(dates, sales, expenses)
     #plot_linegraph(dates, sales, expenses)
-    return render_to_response('accounting/graph.html',
-        {
-            'start': start_date,
-            'end': end_date,
-            'form': form,
-            'dates': dates,
-            'sales': sales,
-            'sales_data': sales_data,
-            'expense_data': expense_data,
-            'expenses': expenses,
-            'total_sales': sum(sales),
-            'total_expenses': sum(expenses),
-            'data': data,
-        },
-        context_instance=RequestContext(request))
+    cntxt = {
+        'start': start_date,
+        'end': end_date,
+        'form': form,
+        'dates': dates,
+        'sales': sales,
+        'sales_data': sales_data,
+        'expense_data': expense_data,
+        'expenses': expenses,
+        'total_sales': sum(sales),
+        'total_expenses': sum(expenses),
+        'data': data,
+    }
+    return render(request, 'accounting/graph.html', cntxt)
+
 
 def get_summaries_by_date(start_date, end_date):
     dates = map(lambda x: start_date + timedelta(x), range((end_date - start_date).days + 1))
@@ -100,6 +103,7 @@ def get_summaries_by_date(start_date, end_date):
     sales_values = map(lambda x:d_sales.get(x), dates)
     expense_values = map(lambda x: d_expenses.get(x), dates)
     return dates, sales_values, expense_values
+
 
 def plot_linegraph(dates, sales, expenses):
     from pylab import plot, hold, xticks, grid, legend, title, savefig, close, arange
@@ -116,13 +120,15 @@ def plot_linegraph(dates, sales, expenses):
     savefig(filename)
     close()
 
+
 def get_series(x, y, label='sales'):
-    data = map(lambda (x,y): [y.day, int(x)], zip(x, y))
+    data = map(lambda (x, y): [y.day, int(x)], zip(x, y))
     return '{label: "%s", data: %s}' % (label, data)
-    
+
+
 def plot_jslinegraph(dates, sales, expenses):
     def get_series(x, y):
-        return map(lambda (x,y): [y.strftime('%b %d'), int(x)], zip(x,y))
+        return map(lambda (x, y): [y.strftime('%b %d'), int(x)], zip(x, y))
     sales_data = {
         'label': 'sales',
         'data': get_series(sales, dates)

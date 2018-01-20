@@ -1,15 +1,16 @@
-from django.views.generic.list_detail import object_list
-from django.db.models import get_model
+#from django.views.generic.list_detail import object_list
+from django.shortcuts import render
+#from django.views.generic.list import ListView
+from django.apps import apps
 from django.conf import settings
-from django import template
-from django.template.loader import get_template
-from datetime import datetime, timedelta
+from datetime import datetime
 from extras.daterange import DateRangeForm
+
 
 def simple_list(request, app_label, model_name, date_field=None, template_name='simplereports/object_list.html'):
     #import pdb;pdb.set_trace()
     extra_context = {}
-    qset = get_model(app_label, model_name)._default_manager.all()
+    qset = apps.get_model(app_label, model_name)._default_manager.all()
     page = request.GET.get('page','1')
     if date_field:
         end_date = datetime.now()
@@ -24,12 +25,24 @@ def simple_list(request, app_label, model_name, date_field=None, template_name='
         qset = qset.filter(**{str(date_field) + '__range': (start_date, end_date)})
         #extra_context should have start and end if datefield is specified
         extra_context.update({'start': start_date, 'end':end_date, 'form': form})
-    return object_list(
-        request,
-        queryset=qset,
-        paginate_by=settings.ITEMS_PER_PAGE,
-        page=page,
-        template_name=template_name,
-        extra_context=extra_context
-    )
-    
+    return render(
+        template_name,
+        {
+            'queryset': qset,
+            'paginate_by': settings.ITEMS_PER_PAGE,
+            'page': page,
+            'start': start_date,
+            'end': end_date,
+            'form': form
+        })
+    #return object_list(
+    #    request,
+    #    queryset=qset,
+    #    paginate_by=settings.ITEMS_PER_PAGE,
+    #    page=page,
+    #    template_name=template_name,
+    #    extra_context=extra_context
+    #)
+
+
+# Create your views here.

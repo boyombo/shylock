@@ -1,0 +1,78 @@
+#itemlist {
+    width: 250px;
+    height:300px;
+    float:left;
+    overflow: scroll;
+    border: 1px solid #000;
+}
+
+#invoice {
+    width: 250px;
+    height:35px;
+    background-color: #ffddff;
+}
+
+#sale {
+    width: 250px;
+    background-color:#ffdddd;
+    height: 75px;
+}
+
+#cart {
+    width: 250px;
+    background-color:#ddddff;
+    min-height: 30px;
+}
+
+#teller {
+    padding-left: 50px;
+}
+
+#sale-heading {
+    display: block;
+    color:#000;
+}
+/**/
+/*table.items tbody tr td a {*/
+/*    color:#000;*/
+/*    text-decoration:none;*/
+/*}*/
+/**/
+/*table.shopping-cart tbody tr td {*/
+/*    padding: 2px 0;*/
+/*    color:#000;*/
+/*}*/
+/**/
+table.shopping-cart tbody tr td input {
+    width:50px;
+}
+
+ul li {
+    list-style: none;
+}
+
+.hidden {
+    display: none;
+}
+
+#showcustomer {
+    cursor: pointer;
+}
+
+.date {
+    margin-left:auto;
+   color#7F7F7F;
+   font-size:12px;
+}
+input#id_discount {
+    width: 75px;
+}
+.input-error {
+    background-color:red;
+}
+.remove-item {
+    cursor: pointer;
+}
+#id_item.focussed {
+    border-color:#FB7A31;
+}

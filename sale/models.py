@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from django.db import models
 from stock.models import Item
 from datetime import datetime
@@ -5,6 +7,7 @@ from decimal import Decimal
 from django.contrib.auth.models import User
 from django.db.models import Max
 from django.conf import settings
+
 
 class Customer(models.Model):
     name = models.CharField(max_length=100)
@@ -17,6 +20,7 @@ class Customer(models.Model):
     def __unicode__(self):
         return self.name
 
+
 class InvoiceManager(models.Manager):
     @property
     def next_number(self):
@@ -26,6 +30,16 @@ class InvoiceManager(models.Manager):
         else:
             next_num = last_num + 1
         return unicode(next_num).zfill(settings.INVOICE_NUMBER_WIDTH)
+
+
+def get_next_invoice():
+    last_num = Invoice.objects.aggregate(Max('id'))['id__max']
+    if not last_num:
+        next_num = 1
+    else:
+        next_num = last_num + 1
+    return unicode(next_num).zfill(settings.INVOICE_NUMBER_WIDTH)
+
 
 class Invoice(models.Model):
     customer = models.ForeignKey(Customer, blank=True, null=True)
@@ -49,6 +63,7 @@ class Invoice(models.Model):
     def amount(self):
         return sum(sale.amount for sale in self.sale_set.all()) - self.discount
 
+
 class Sale(models.Model):
     item = models.ForeignKey(Item)
     quantity = models.FloatField()
@@ -71,6 +86,7 @@ class Sale(models.Model):
     def amount(self):
         return Decimal(str(self.quantity)) * self.price
 
+
 class CostOfSale(models.Model):
     sale = models.ForeignKey(Sale)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
@@ -81,6 +97,7 @@ class CostOfSale(models.Model):
     def __unicode__(self):
         return self.amount
 
+
 class Cart(models.Model):
     item = models.ForeignKey(Item, related_name="carts")
     qty = models.PositiveIntegerField(default=1)
@@ -88,4 +105,3 @@ class Cart(models.Model):
 
     def __unicode__(self):
         return self.item.code
-

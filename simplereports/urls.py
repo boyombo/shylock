@@ -1,6 +1,9 @@
-#!/usr/bin/env python
-from django.conf.urls.defaults import *
+from django.conf.urls import url
 
-urlpatterns = patterns('simplereports.views',
-    url(r'(?P<app_label>\w+)/(?P<model_name>\w+)/(?P<date_field>\w*)[/]*$', 'simple_list', name='simplereport_simple_list'),
-)
+from simplereports import views
+
+
+urlpatterns = [
+    url(r'(?P<app_label>\w+)/(?P<model_name>\w+)/(?P<date_field>\w*)[/]*$',
+        views.simple_list, name='simplereport_simple_list'),
+]
