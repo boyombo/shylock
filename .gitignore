@@ -18,6 +18,9 @@ scripts/
 # media files
 media/
 
+# temporary files
+temp/
+
 # sqlite db
 *.sqlite3
 *.db
