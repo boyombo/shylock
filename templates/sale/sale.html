@@ -1,28 +1,29 @@
 {% extends "sale/base.html" %}
+{% load static from staticfiles %}
 {% load shopping_cart %}
 {% block extrahead %}
-<link href="{{ MEDIA_URL }}css/sale.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
-<link href="{{ MEDIA_URL }}css/jquery.autocomplete.css" rel="stylesheet" type="text/css" media="screen" />
-<script type="text/javascript" src='{{ MEDIA_URL }}js/jquery.livequery.js'></script>
-<script type="text/javascript" src='{{ MEDIA_URL }}js/jquery.form.js'></script>
-<script type="text/javascript" src='{{ MEDIA_URL }}js/jquery.autocomplete.js'></script>
+<link href="{% static 'css/sale.css' %}" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/jquery.autocomplete.css' %}" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="{% static 'js/jquery.livequery.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.form.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/jquery.autocomplete.js' %}"></script>
 {{ invoiceform.media }}
 <script type='text/javascript'>
     $(function(){
-        $("#id_name").autocomplete("{% url sale_customer_complete %}" + $(this).val() + "",
+        $("#id_name").autocomplete("{% url 'sale_customer_complete' %}" + $(this).val() + "",
                 {
                    multiple: true,
                    highlight: true
                 });
-        $('#id_item').autocomplete('{% url sale_item_complete %}' + $(this).val() + "",
+        $('#id_item').autocomplete("{% url 'sale_item_complete' %}" + $(this).val() + "",
                 {
                     multiple: true,
                     highlight: true
                 });
         $('.formset-item').change(function(){
             var item = $(this);
-            $.get("{% url sale_get_price %}", {'item': item.val()}, function(data){
+            $.get("{% url 'sale_get_price' %}", {'item': item.val()}, function(data){
                 var id = "#id_form-" + item.attr("name").substring(5,6) + "-price";
                 $(id).val(data);
                 });
@@ -56,7 +57,7 @@
         
         $('#itemsubmit').click(function(){
             $.ajax({
-                   url: '{% url stock_get_item %}',
+                   url: "{% url 'stock_get_item' %}",
                    type: 'GET',
                    data: {'code': $('#id_item').val()},
                    dataType: 'json',
@@ -77,7 +78,7 @@
                             });
                             //if we are here then item is not in cart
                             if (count == 0){
-                                $.get('{% url stock_get_row %}', {'code': code},
+                                $.get("{% url 'stock_get_row' %}", {'code': code},
                                       function(data){
                                         $('tbody').append(data);
                                         update_totals();
@@ -138,7 +139,7 @@
         update_totals();
         
         var sale_options = {
-            url: '{% url sale_new %}',
+            url: "{% url 'sale_new' %}",
             type: 'POST',
             success: function(data){
                 $('#clear').click();
@@ -170,7 +171,7 @@
         <input type="button" id="itemsubmit" style="margin-left:0;" value="add" />    </fieldset>
 </form>
 
-<form id="invoiceform" method="post" action="{% url sale_new %}">{% csrf_token %}
+<form id="invoiceform" method="post" action="{% url 'sale_new' %}">{% csrf_token %}
     <fieldset>
         <legend>Invoice: {{ invoice_number }}</legend>
         

@@ -1,9 +1,9 @@
 {% extends "stock/base_serial.html" %}
-{% load pagination_tags %}
 {% load humanize %}
+{% load static from staticfiles %}
 
 {% block extrahead %}
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
 
 {% endblock %}
 {% block header %}Serial list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
@@ -11,12 +11,10 @@
 {% block toplinks %}
 <div style="float: left;">
 </div>
-<div style="float: right;"><a href="{% url serial_newitem %}" class="addbutton">add new</a></div>
+<div style="float: right;"><a href="{% url 'serial_newitem' %}" class="addbutton">add new</a></div>
 {% endblock %}
 
 {% block body %}
-    {% autopaginate items 20 %}
-    {% paginate %}
 <table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
 <thead>
 <tr>

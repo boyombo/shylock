@@ -1,18 +1,16 @@
 {% extends "stock/base.html" %}
-{% load pagination_tags %}
+{% load static from staticfiles %}
 
 {% block extrahead %}
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
 {% endblock %}
 {% block header %}Location list{% endblock %}
 
 {% block toplinks %}
-<div><a href="{% url stock_newlocation %}" class="addbutton">add new</a></div>
+<div><a href="{% url 'stock_newlocation' %}" class="addbutton">add new</a></div>
 {% endblock %}
 
 {% block body %}
-    {% autopaginate object_list 20 %}
-    {% paginate %}
 
 <table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
 <thead>
@@ -25,7 +23,7 @@
 <tbody>
     {% for location in object_list %}
         <tr class={% cycle "even" "odd" %}>
-            <td><a href="{% url stock_editlocation pk=location.pk %}">edit</a></td>
+            <td><a href="{% url 'stock_editlocation' pk=location.pk %}">edit</a></td>
             <td>{{ location.name }}</td>
             <td>{{ location.get_type_display }}</td>
         </tr>

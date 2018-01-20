@@ -5,8 +5,8 @@
 
 {% endblock %}
 {% block sub_menu %}
-<li><a href="{% url accounting_pandl %}">Profit and Loss</a></li>
-<li><a href="{% url accounting_graph %}">Trends</a></li>
-<li><a href="{% url expense_list %}">Breakdown</a></li>
-<li><a href="{% url expense_new %}">Profits</a></li>
+<li><a href="{% url 'accounting_pandl' %}">Profit and Loss</a></li>
+<li><a href="{% url 'accounting_graph' %}">Trends</a></li>
+<li><a href="{% url 'expense_list' %}">Breakdown</a></li>
+<li><a href="{% url 'expense_new' %}">Profits</a></li>
 {% endblock %}

@@ -1,18 +1,16 @@
 {% extends "stock/base.html" %}
-{% load pagination_tags %}
+{% load static from staticfiles %}
 
 {% block extrahead %}
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
 {% endblock %}
 {% block header %}User list{% endblock %}
 
 {% block toplinks %}
-<div><a href="{% url stock_newuser %}" class="addbutton">add new</a></div>
+<div><a href="{% url 'stock_newuser' %}" class="addbutton">add new</a></div>
 {% endblock %}
 
 {% block body %}
-    {% autopaginate object_list 20 %}
-    {% paginate %}
 
 <table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
 <thead>
@@ -25,9 +23,9 @@
 </tr>
 </thead>
 <tbody>
-    {% for user in object_list %}
+    {% for user in users_list %}
         <tr class={% cycle "even" "odd" %}>
-            <td><a href="{% url stock_edituser pk=user.pk %}">edit</a></td>
+            <td><a href="{% url 'stock_edituser' pk=user.pk %}">edit</a></td>
             <td>{{ user.user.username }}</td>
             <td>{{ user.read_only|yesno }}</td>
             <td>{{ user.location }}</td>
@@ -39,7 +37,7 @@
 </tbody>
 <tfoot>
     <tr>
-        <td>Count: {{ object_list|length }}</td>
+        <td>Count: {{ users_list|length }}</td>
         <td colspan=4></td>
     </tr>
 </tfoot>

@@ -1,7 +1,9 @@
 {% extends "accounting/base.html" %}
 {% load humanize %}
+{% load static from staticfiles %}
+
 {% block extrahead %}
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
 {{ form.media }}
 {% endblock %}
 {% block header %}

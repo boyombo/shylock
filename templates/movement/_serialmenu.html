@@ -1,4 +1,4 @@
 {% if user.is_superuser %}
-  <li><a href="{% url serial_categories %}">Categories</a></li>
+  <li><a href="{% url 'serial_categories' %}">Categories</a></li>
 {% endif %}
-  <li><a href="{% url serial_list %}">Serials</a></li>
+  <li><a href="{% url 'serial_list' %}">Serials</a></li>

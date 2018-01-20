@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'sale.apps.SaleConfig',
     'expenses.apps.ExpensesConfig',
     'simplereports.apps.SimplereportsConfig',
-    #'accounting',
+    'accounting.apps.AccountingConfig',
     #'pagination',
 ]
 

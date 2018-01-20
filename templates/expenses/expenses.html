@@ -1,6 +1,8 @@
 {% extends "expenses/base.html" %}
+{% load static from staticfiles %}
+
 {% block extrahead %}
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
+<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
 {% endblock %}
 {% block header %}
 Expenses
@@ -30,21 +32,7 @@ Expenses
     No expense categories to display.
     {% endfor %}
 </tbody>
-<tfoot>
-    <tr>
-        <td colspan="5">
-            {% for p in paginator.page_range %}
-            {% ifnotequal page p %}
-                <span class="paginator"><a href="?page={{ p}}">{{ p }}</a></span>
-            {% else %}
-            <span class="paginator">{{ p }}</span>
-            {% endifnotequal %}
-            {% endfor %}
-       
-            Total of {{ paginator.count }} item{{ paginator.count|pluralize }}.
-        </td>
-    </tr>
-</tfoot>
+
 </table>
 </div>
 {% endblock %}
