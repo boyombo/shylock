@@ -25,7 +25,7 @@ SECRET_KEY = 'p*mc$x!-d2qcm12y&jkgx*+)4v7g=_xkxar%t!(wnb$+4km4jl'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost:8000', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost:8000', 'localhost', '127.0.0.1', 'shylock.everyday.com.ng']
 
 
 # Application definition
