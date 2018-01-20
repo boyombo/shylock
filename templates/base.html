@@ -28,8 +28,6 @@ Released   : 20071220
     </div>
     {% if user.is_authenticated %}
             <div id="logout"><a href="{% url 'site_logout' %}">Logout</a></div>
-     {% else %}
-            <div class="active"><a href="{% url 'site_login' %}">Login</a></div>
     {% endif %}
     <div id="menu">
         <ul>
@@ -47,7 +45,7 @@ Released   : 20071220
             {% endcomment %}
             {% endif %}
             {% else %}
-            <li class="active"><a href="{% url site_login %}">Login</a></li>
+            <li class="active"><a href="{% url 'site_login' %}">Login</a></li>
             {% endif %}
         </ul>
     </div>
