@@ -1,28 +1,37 @@
 {% extends "base.html" %}
 
-{% block body %}
-<div class="panel">
-<h1>Hello and welcome to shylock.</h1>
-<h2>A simple and revolutionary Point of Sale software.</h2>
-<br />work started night of 08/feb/08...
-<h3>recent modifications (13-18/feb/08)</h3>
-<ul>
-    <li>The django logo!!!</li>    
-    <li>promotions (now you can promote individuals and groups of people - actually all -- haven't implemented grouping)</li>
-    <li>salary scale (was in the admin before but brought it out)</li>    
-    <li>payslips: (a tricky one. but many thanks to <a href='http://www.reportlab.org'>reportlab</a>)</li>
-    <li>deleting payitems (not yet allowing edit. have to delete then add back)</li>    
-</ul>
-<h3>coming next</h3>
-<ul>
-    <li>a blogging app: (so i dont have to always edit this page)</li>    
-</ul>
-<h3>contact</h3>
-<ul>
-    <li><a href='http://bayo.opadeyi.net'>my blog (for now)</a></li>    
-</ul>
-</div>
-{% endblock %}
-
-{% block sub_menu %}
-{% endblock %}
+{% block content %}
+    <!-- banner -->
+    <div class="w3ls-banner"> 
+        <!-- banner-text -->
+        <div class="banner-text agileinfo"> 
+            <div class="container">
+                <div class="flexslider">
+                    <ul class="slides">
+                        <li>
+                            <div class="banner-w3lstext"> 
+                                <h2>Welcome to Salespoint</h2>
+                                <p>A simple and revolutionary point of sale software.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="banner-w3lstext"> 
+                                <h3>Salespoint</h3>
+                                <p>A ready to go software that helps you take inventory of your goods, products and services while taking stock of what is left on the shelf for easy record keeping</p>
+                            </div> 
+                        </li>
+                        <li>
+                            <div class="banner-w3lstext"> 
+                                <h3>Point of Sales with a difference</h3>
+                                <p>Salespoint is not only fast and easy to use. But is incorporates strong record lab that helps you to take statistical records in an easy to understand format. Salespoint is the software for you</p>
+                            </div> 
+                        </li>
+                    </ul> 
+                </div>   
+            </div>  
+        </div>  
+        <!-- //banner-text -->   
+    </div>  
+    <!-- //banner -->
+   
+{% endblock content %}

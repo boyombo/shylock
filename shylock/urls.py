@@ -28,7 +28,7 @@ urlpatterns = [
     url(r'^expenses/', include('expenses.urls')),
     url(r'^simplereports/', include('simplereports.urls')),
     url(r'^accounting/', include('accounting.urls')),
-    url(r'^$', TemplateView.as_view(template_name='default.html')),
+    url(r'^$', TemplateView.as_view(template_name='default.html'), name='home'),
     url(r'^accounts/login/$', login, name='site_login'),
     url(r'^accounts/logout/$', logout_then_login, name='site_logout'),
 ]
