@@ -1,26 +1,86 @@
-{% extends "stock/base.html" %}
+{% extends "newbase.html" %}
+
+{% block title %}New Location{% endblock %}
+
 {% block extrahead %}
 <script type='text/javascript'>
 $(document).ready(function(){
-    $('#id_name').focus();
+    $('#id_code').focus();
  });
 </script>
 {{ form.media }}
 {% endblock %}
-{% block header %}New Location{% endblock %}
-{% block body %}
 
-<form method="POST" action=".">{% csrf_token %} 
-  <ul>
-      <li>
-      {{ form.name.errors }}
-      {{ form.name.label_tag }} {{ form.name }}
-      </li>
-      <li>
-      {{ form.type.errors }}
-      {{ form.type.label_tag }} {{ form.type }}
-      </li>
-      </ul>
-  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
- </form>
-{% endblock %}
+{% block sub_menu %}{% endblock %}
+
+{% block content %}
+
+
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-offset-2 col-md-7" style="text-align:center;">
+            <div class="panel panel-default" >
+                <div id="contact" class="contact" style="padding-top:15px;">
+                    <div class="container">              
+                        <div class="contact-row agileits-w3layouts" >  
+                            <div class="col-md-6 col-sm-6  contact-w3lsleft" style="text-align:center;">
+                                <div class="contact-grid agileits" style="background: #DDEDE0;">
+                                    <h4 style="color: black;">New Location</h4>
+                                    <form action="" method="post">{% csrf_token %}
+                                        {% if form.non_field_errors %}
+                                            {% for error in form.non_field_errors %}
+                                                <div class="has-error">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.name.errors %}
+                                                <p class="help_block">
+                                                    {{ form.name.errors }}
+                                                </p>
+                                            {% endif %}
+                                            {{ form.name  }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.type.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.type.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.type }}
+                                        </div>
+
+                                        <input style="background: #B9EDF0; color: black;" type="submit" value="Submit" >
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+            </div>
+        
+    </div>    
+    <div class="col-md-3">
+        {% include "movement/_submenu.html" %}
+    </div>
+</div>
+</section>
+
+
+{% endblock content %}
+
+
+{% block extra-js %}
+<script>
+  $('#id_name').attr('placeholder', 'Name');
+  $('#id_name').addClass('form-control');
+
+  $('#id_type').attr('placeholder', 'Type');
+  $('#id_type').addClass('form-control');
+
+  </script>
+{% endblock extra-js %}
