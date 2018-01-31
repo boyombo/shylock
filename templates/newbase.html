@@ -1,0 +1,236 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>{% block title %}Welcome{% endblock %} :: Salespoint</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="Entity Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+    SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, Sony Ericsson, Motorola web design" />
+<script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
+<!-- Custom Theme files -->
+<link href="{% static 'new/css/bootstrap.css' %}" type="text/css" rel="stylesheet" media="all">
+<link href="{% static 'new/css/style.css' %}" type="text/css" rel="stylesheet" media="all">  
+<link href="{% static 'new/css/font-awesome.css' %}" rel="stylesheet">   <!-- font-awesome icons -->  
+<link rel="stylesheet" href="{% static 'new/css/flexslider.css' %}" type="text/css" media="all" property="" />
+<link rel="stylesheet" href="{% static 'new/css/lightbox.css' %}">
+<!-- //Custom Theme files -->    
+<!-- js --> 
+<script src="{% static 'new/js/jquery-2.2.3.min.js' %}"></script>  
+
+<!-- //js -->  
+<!-- web-fonts -->     
+<link href="//fonts.googleapis.com/css?family=Roboto+Condensed:300,300i,400,400i,700,700i" rel="stylesheet">
+<link href="//fonts.googleapis.com/css?family=Alegreya+Sans:100,100i,300,300i,400,400i,500,500i,700,700i,800,800i,900,900i" rel="stylesheet"> 
+<!-- //web-fonts -->  
+{% block extrahead %}{% endblock extrahead %}
+
+{% include 'admin_extra_css.html'%}
+</head> 
+<body>
+    <!-- header -->
+    <div class="header" id="home">
+        <div class="container">
+            <div class="agile_header_grid"> 
+                <div class="header-mdl agileits-logo"><!-- header-two --> 
+                    <h1></h1> 
+                    <a href="{% url 'home' %}">
+                        <img src="{% static 'new/images/NH-Logo-1.png' %}" alt="volic baby diapers logo">
+                    </a>
+                </div>
+                
+                    
+                
+
+                <div class="agile_social_banner">
+                    <ul class="agileits_social_list">
+
+                        {% if user.is_authenticated %}
+                            <li>
+                                <h3><small>Welcome</small> {{ user.get_full_name|default:user }}</h3>
+                            </li>
+                        {% endif %}
+
+                        <li>
+                            <a href="#" class="w3_agile_facebook">
+                                <i class="fa fa-facebook" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="agile_twitter">
+                                <i class="fa fa-twitter" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="w3_agile_dribble">
+                                <i class="fa fa-dribbble" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#" class="w3_agile_vimeo">
+                                <i class="fa fa-vimeo" aria-hidden="true"></i>
+                            </a>
+                        </li>
+                    </ul>
+                </div>  
+                <div class="clearfix"> </div>
+            </div>  
+        </div>  
+    </div>  
+    <!-- //header -->
+    <!-- navigation -->
+    <div class="top-nav">
+        <nav class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                </div>
+                <!-- Collect the nav links, forms, and other content for toggling -->
+                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                    <ul class="nav navbar-center cl-effect-15">
+                        {% if user.is_authenticated %}
+                            <li><a href="{% url 'site_logout' %}" class="">Logout</a></li>
+
+                            {% if user.is_superuser %}
+                                <li><a href="{% url 'user_list' %}" class="">Users</a></li>
+                                <li><a href="{% url 'accounting_pandl' %}" class="">Report</a></li> 
+                            {% endif %}
+
+                            <li><a href="{% url 'stock_list' %}" class="">Stock</a></li>
+                            <li><a href="{% url 'serial_list' %}" class="">Serials</a></li>          
+                            <li><a href="{% url 'sale_new' %}" class="">Sales</a></li>
+                            <li><a href="{% url 'expense_list' %}">Expenses</a></li>
+                            
+                        {% else %}
+                            <li><a href="{% url 'site_login' %}" class="active ">Login</a></li>
+                        {% endif %}
+                    </ul>   
+                    <div class="clearfix"> </div>
+                </div>
+            </div>  
+        </nav>      
+    </div>  
+    <!-- navigation -->
+    <section id=""> <!-- main-content -->
+    <section class="" style="min-height: 500px;"> <!-- wrapper -->
+
+{% if messages %}      
+<div class="alert alert-success" role="alert">
+    {% for message in messages %}
+    <h4 style="text-align: center"><strong>{{ message }}</strong></h4>
+    {% endfor %}
+</div>
+{% endif %}
+    
+
+    {% block content %}
+
+    {% endblock content %}
+    </section>
+    </section>
+
+    {% block extra-js %}
+    {% endblock extra-js %}
+    <!-- footer -->
+    <div class="footer">
+        <div class="container">
+           
+            <a href="{% url 'home' %}">
+                <img src="{% static 'new/images/NH-Logo-2.png' %}" alt="volic baby diapers logo">
+            </a>
+            <p>© 2018 Volic Group Of Companies Limited.<br><a href="http://clearcode.com.ng/">Software Design by ClearCodeLabs</a><br> All rights reserved</p>
+            <div class="agileits_social_icons">
+                <ul class="agileits_social_list">
+                    <li><a href="#" class="w3_agile_facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                    <li><a href="#" class="agile_twitter"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                    <li><a href="#" class="w3_agile_dribble"><i class="fa fa-dribbble" aria-hidden="true"></i></a></li> 
+                    <li><a href="#" class="w3_agile_vimeo"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
+                </ul>
+            </div> 
+        </div>
+    </div>
+    <!-- //footer -->   
+    <!-- modal -->
+    <div class="modal about-modal w3-agileits fade" id="myModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>                        
+                </div> 
+                <div class="modal-body">
+                    <img src="images/img2.jpg" alt=""> 
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras rutrum iaculis enim, non convallis felis mattis at. Donec fringilla lacus eu pretium rutrum. Cras aliquet congue ullamcorper. Etiam mattis eros eu ullamcorper volutpat. Proin ut dui a urna efficitur varius. uisque molestie cursus mi et congue consectetur adipiscing elit cras rutrum iaculis enim, Lorem ipsum dolor sit amet, non convallis felis mattis at. Maecenas sodales tortor ac ligula ultrices dictum et quis urna. Etiam pulvinar metus neque, eget porttitor massa vulputate. 
+                    <br>Etiam mattis eros eu ullamcorper volutpat. Proin ut dui a urna efficitur varius. uisque molestie cursus mi et congue consectetur adipiscing elit cras rutrum iaculis enim, Lorem ipsum dolor sit amet, non convallis felis mattis at.</p>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <!-- //modal -->    
+    <!-- FlexSlider --> 
+    <script defer src="{% static 'new/js/jquery.flexslider.js' %}"></script>
+    <script type="text/javascript">
+        $(window).load(function(){
+          $('.flexslider').flexslider({
+            animation: "slide",
+            start: function(slider){
+              $('body').removeClass('loading');
+            }
+          });
+        });
+    </script>
+    <!-- End-slider-script -->   
+    <!-- jarallax -->  
+    <script src="{% static 'new/js/SmoothScroll.min.js' %}"></script> 
+     
+    <script type="text/javascript">
+        /* init Jarallax */
+        $('.jarallax').jarallax({
+            speed: 0.5,
+            imgWidth: 1366,
+            imgHeight: 768
+        })
+    </script>  
+    <!-- //jarallax --> 
+    <!-- start-smooth-scrolling --> 
+    <script type="text/javascript" src="{% static 'new/js/move-top.j' %}s"></script>
+    <script type="text/javascript" src="{% static 'new/js/easing.js' %}"></script> 
+    <script type="text/javascript">
+            jQuery(document).ready(function($) {
+                $(".scroll").click(function(event){     
+                    event.preventDefault();
+            
+            $('html,body').animate({scrollTop:$(this.hash).offset().top},1000);
+                });
+            });
+    </script>
+    <!-- //end-smooth-scrolling --> 
+    <!-- smooth-scrolling-of-move-up -->
+    <script type="text/javascript">
+        $(document).ready(function() {
+            /*
+            var defaults = {
+                containerID: 'toTop', // fading element id
+                containerHoverID: 'toTopHover', // fading element hover id
+                scrollSpeed: 1200,
+                easingType: 'linear' 
+            };
+            */
+            
+            $().UItoTop({ easingType: 'easeOutQuart' });
+            
+        });
+    </script>
+    <!-- //smooth-scrolling-of-move-up -->    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="{% static 'new/js/bootstrap.js' %}"></script>
+
+</body>
+</html>
