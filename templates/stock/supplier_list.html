@@ -1,43 +1,84 @@
-{% extends "stock/base.html" %}
-{% load static from staticfiles %}
+{% extends "newbase.html" %}
+{% load staticfiles %}
 
-{% block extrahead %}
-<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
-{% endblock %}
-{% block header %}Supplier list{% endblock %}
+{% block title %}Supplier list{% endblock %}
 
-{% block toplinks %}
-<div><a href="{% url 'stock_newsupplier' %}" class="addbutton">add new</a></div>
-{% endblock %}
 
-{% block body %}
-<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
-<thead>
-<tr>
-    <th>edit</th>
-    <th class='sort-alpha'>Name</th>
-    <th class='sort-alpha'>Phone</th>
-    <th class='sort-alpha'>Address</th>
-</tr>
-</thead>
-<tbody>
-        {% for supplier in object_list %}
-            <tr class={% cycle "even" "odd" %}>
-                <td><a href="{% url 'stock_editsupplier' id=supplier.id %}">edit</a></td>
-                <td>{{ supplier.name }}</td>
-                <td>{{ supplier.phone }}</td>
-                <td>{{ supplier.address }}</td>
-            </tr>
-        {% empty %}
-        No items to display
-        {% endfor %}
-</tbody>
-<tfoot>
-    <tr>
-        <td>Count: {{ object_list|length }}</td>
-        <td colspan=3></td>
-    </tr>
-</tfoot>
-</table>
-<br />
-{% endblock %}
+{% block content %}
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-9">
+       <div class="table-agile-info">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+             {% block header %}Supplier list{% endblock %}
+            </div>
+
+        <div class="row">
+            <div class="col-md-9" style="padding-right:">
+                <!-- <select id="locations" class="form-control input-lg">
+                    <option value="" default=true >Select location</option>
+                    {% for location in locations %}
+                        <option value={{ location.pk }}>{{ location.name }}</value>
+                    {% endfor %}
+                </select>   -->             
+            </div>
+            <div class="col-md-3" style="padding-left:">
+                <a style="display:block;" href="{% url 'stock_newsupplier' %}" class="btn btn-default btn-lg ">Add new</a>
+            </div>
+        </div>
+        
+            <div>
+              <table class="table" ui-jq="footable" ui-options='{
+                "paging": {
+                  "enabled": true
+                },
+                "filtering": {
+                  "enabled": true
+                },
+                "sorting": {
+                  "enabled": true
+                }}'>
+                <thead>
+                  <tr>
+                    
+                    <th data-breakpoints="xs">Edit</th>
+                    <th>Name</th>
+                    <th>Phone</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    {% for supplier in object_list %}
+                      <tr data-expanded="true" class="{% cycle "even" "odd" %}">
+                        <td><a href="{% url 'stock_editsupplier' id=supplier.id %}">edit</a></td>
+                        <td>{{ supplier.name }}</td>
+                        <td>{{ supplier.phone }}</td>
+                        <td>{{ supplier.address }}</td>                        
+                      </tr>
+                    {% empty %}
+                        <p style="text-align:center; padding-top: 15px;">
+                            No items to display
+                        </p>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Count: {{ object_list|length }}</td>
+                        <td colspan="3"></td>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% include "movement/_submenu.html" %}
+        </div>
+    </div>
+</div>
+</section>
+
+{% endblock content %}
