@@ -1,38 +1,71 @@
-{% extends "expenses/base.html" %}
-{% load static from staticfiles %}
+{% extends "newbase.html" %}
+{% load staticfiles %}
 
-{% block extrahead %}
-<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
-{% endblock %}
-{% block header %}
-Expenses
-{% endblock %}
-{% block body %}
-<div>
-<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
-<thead>
-<tr>
-    <th class='sort-alpha'>Name</th>
-    <th class='sort-alpha'>Location</th>
-    <th class='sort-alpha'>Category</th>
-    <th class='sort-alpha'>Amount</th>
-    <th class='sort-alpha'>Date</th>
-</tr>
-</thead>
-<tbody>
-    {% for expense in object_list %}
-        <tr class="{% cycle 'even' 'odd' %}">
-            <td>{{ expense.description }}</td>
-            <td>{{ expense.location }}</td>
-            <td>{{ expense.category }}</td>
-            <td>{{ expense.amount }}</td>
-            <td>{{ expense.date|date:"jS b Y" }}</td>
-        </tr>
-    {% empty %}
-    No expense categories to display.
-    {% endfor %}
-</tbody>
+{% block title %}Expenses{% endblock %}
 
-</table>
+
+{% block content %}
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-9">
+       <div class="table-agile-info">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+                Expenses
+            </div>
+
+  
+            <div>
+              <table class="table" ui-jq="footable" ui-options='{
+                "paging": {
+                  "enabled": true
+                },
+                "filtering": {
+                  "enabled": true
+                },
+                "sorting": {
+                  "enabled": true
+                }}'>
+                <thead>
+                  <tr>
+                    
+                    <th data-breakpoints="xs">Name</th>
+                    <th>Location</th>
+                    <th>Category</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                {% for expense in object_list %}
+                    <tr class="{% cycle 'even' 'odd' %}">
+                        <td>{{ expense.description }}</td>
+                        <td>{{ expense.location }}</td>
+                        <td>{{ expense.category }}</td>
+                        <td>{{ expense.amount }}</td>
+                        <td>{{ expense.date|date:"jS b Y" }}</td>
+                    </tr>
+                {% empty %}
+                        <p style="text-align:center; padding-top: 15px;">
+                        No expense categories to display.
+                        </p>
+                {% endfor %}
+
+                </tbody>
+                <tfoot>
+                    
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% include "expenses/_submenu.html" %}
+        </div>
+    </div>
 </div>
-{% endblock %}
+</section>
+
+{% endblock content %}

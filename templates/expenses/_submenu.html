@@ -1,3 +1,16 @@
-<li><a href="{% url category_list %}">Categories</a></li>
-<li><a href="{% url expense_list %}">Expenses</a></li>
-<li><a href="{% url expense_new %}">New Expense</a></li>
+<section class="">
+    <div class="table-agile-info">
+        <ul class="nav nav-pills nav-stacked mail-nav">        
+            <div class="panel-heading">
+                 Fast Links
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <ul class="nav nav-pills nav-stacked mail-nav">
+                   <li><a href="{% url 'category_list' %}">Categories</a></li>
+                    <li><a href="{% url 'expense_list' %}">Expenses</a></li>
+                    <li><a href="{% url 'expense_new' %}">New Expense</a></li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</section>
