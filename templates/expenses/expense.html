@@ -1,4 +1,7 @@
-{% extends "expenses/base.html" %}
+{% extends "newbase.html" %}
+
+{% block title %}New Expense{% endblock %}
+
 {% block extrahead %}
 <script type='text/javascript'>
 $(document).ready(function(){
@@ -7,32 +10,122 @@ $(document).ready(function(){
 </script>
 {{ form.media }}
 {% endblock %}
-{% block header %}New Expense{% endblock %}
-{% block body %}
 
-<form method="POST" action=".">{% csrf_token %} 
-  <ul>
-      <li>
-      {{ form.description.errors }}
-      {{ form.description.label_tag }} {{ form.description }}
-      </li>
-      <li>
-      {{ form.location.errors }}
-      {{ form.location.label_tag }} {{ form.location }}
-      </li>
-      <li>
-      {{ form.category.errors }}
-      {{ form.category.label_tag }} {{ form.category }}
-      </li>
-      <li>
-      {{ form.amount.errors }}
-      {{ form.amount.label_tag }} {{ form.amount }}
-      </li>
-      <li>
-      {{ form.date.errors }}
-      {{ form.date.label_tag }} {{ form.date }}
-      </li>
-      </ul>
-  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
- </form>
-{% endblock %}
+{% block sub_menu %}{% endblock %}
+
+{% block content %}
+
+
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-offset-2 col-md-7" style="text-align:center;">
+            <div class="panel panel-default" >
+                <div id="contact" class="contact" style="padding-top:15px;">
+                    <div class="container">              
+                        <div class="contact-row agileits-w3layouts" >  
+                            <div class="col-md-6 col-sm-6  contact-w3lsleft" style="text-align:center;">
+                                <div class="contact-grid agileits" style="background: #DDEDE0;">
+                                    <h4 style="color: black;">New Expense</h4>
+                                    <form action="" method="post">{% csrf_token %}
+                                        {% if form.non_field_errors %}
+                                            {% for error in form.non_field_errors %}
+                                                <div class="has-error">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.code.errors %}
+                                                <p class="help_block">
+                                                    {{ form.code.errors }}
+                                                </p>
+                                            {% endif %}
+                                            {{ form.code  }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.description.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.description.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.description }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.location.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.location.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.location }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if fform.category.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.category.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.category }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.amount.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.amount.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.amount }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.date.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.date.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.date }}
+                                        </div>
+
+                                        <input style="background: #B9EDF0; color: black;" type="submit" value="Submit" >
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+            </div>
+        
+    </div>    
+    <div class="col-md-3">
+        {% include "expenses/_submenu.html" %}
+    </div>
+</div>
+</section>
+
+
+{% endblock content %}
+
+
+{% block extra-js %}
+<script>
+  $('#id_description').attr('placeholder', 'Description');
+  $('#id_description').addClass('form-control');
+
+  $('#id_location').attr('placeholder', 'Location');
+  $('#id_location').addClass('form-control');
+
+  $('#id_category').attr('placeholder', 'Category');
+  $('#id_category').addClass('form-control');
+
+  $('#id_amount').attr('placeholder', 'Amount');
+  $('#id_amount').addClass('form-control');
+
+  $('#id_date').attr('placeholder', 'date');
+  $('#id_date').addClass('form-control');
+
+  </script>
+{% endblock extra-js %}
