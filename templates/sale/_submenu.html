@@ -1,3 +1,16 @@
-<li><a href="{% url sale_list %}">Sales</a></li>
-<li><a href="{% url sale_customer_list %}">Customers</a></li>
-<li><a href="{% url sale_new %}">New Sale</a></li>
+<section class="">
+    <div class="table-agile-info">
+        <ul class="nav nav-pills nav-stacked mail-nav">        
+            <div class="panel-heading">
+                 Fast Links
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <ul class="nav nav-pills nav-stacked mail-nav">
+                    <li><a href="{% url 'sale_list' %}">Sales</a></li>
+                    <li><a href="{% url 'sale_customer_list' %}">Customers</a></li>
+                    <li><a href="{% url 'sale_new' %}">New Sale</a></li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</section>
