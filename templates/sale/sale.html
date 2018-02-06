@@ -1,13 +1,9 @@
-{% extends "sale/base.html" %}
-{% load static from staticfiles %}
+{% extends "newbase.html" %}
+
+{% block title %}Sale{% endblock %}
 {% load shopping_cart %}
+
 {% block extrahead %}
-<link href="{% static 'css/sale.css' %}" rel="stylesheet" type="text/css" media="screen" />
-<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
-<link href="{% static 'css/jquery.autocomplete.css' %}" rel="stylesheet" type="text/css" media="screen" />
-<script type="text/javascript" src="{% static 'js/jquery.livequery.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.form.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/jquery.autocomplete.js' %}"></script>
 {{ invoiceform.media }}
 <script type='text/javascript'>
     $(function(){
@@ -152,24 +148,41 @@
         $('#invoiceform').ajaxForm(sale_options);
         });
 </script>
-{% endblock %}
-{% block header %}Sale
-{% endblock %}
-{% block body %}
-<div class="msg">
-    <ul class="message">
-    </ul>
-</div>
-<div id="sale-heading">
-        <span class="date">{% now "jS F Y" %}</span>
-</div>
+{% endblock extrahead %}
 
-<form id="itemform">
-    <fieldset>
-        <legend>Item</legend>
-        {{ itemform.item }}
-        <input type="button" id="itemsubmit" style="margin-left:0;" value="add" />    </fieldset>
-</form>
+{% block sub_menu %}{% endblock %}
+
+{% block content %}
+
+
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-9">
+       <div class="table-agile-info">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+             Sale
+            </div>
+
+            <form id="itemform">
+                <fieldset>
+                    <legend>Item</legend>
+                    {{ itemform.item }}
+                    <input type="button" id="itemsubmit" style="margin-left:0;" value="add" />    </fieldset>
+            </form>
+
+        
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="domprogress">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-inverse" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+           
+
+            <div>
 
 <form id="invoiceform" method="post" action="{% url 'sale_new' %}">{% csrf_token %}
     <fieldset>
@@ -194,4 +207,56 @@
     <input type="submit" id="submit" value="submit" />
     <input type="button" id="clear" value="clear" />
 </form>
-{% endblock %}
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% include "sale/_submenu.html" %}
+        </div>
+    </div>
+</div>
+</section>
+
+
+{% endblock content %}
+
+
+{% block extra-js %}
+<script>
+  $('#id_itemform').attr('placeholder', 'Item');
+  $('#id_itemform').addClass('form-control');
+
+  $('#id_description').attr('placeholder', 'Description');
+  $('#id_description').addClass('form-control');
+
+  </script>
+{% endblock extra-js %}
+
+
+<div class="row">
+            <form id="itemform">
+                {% if form.non_field_errors %}
+                    {% for error in form.non_field_errors %}
+                        <div class="has-error">
+                            {{ error }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="col-md-9 contact-w3lsleft" style="padding-right:">
+                    <div class="form-control input-lg has-feedback">
+                        {% if itemform.item.errors %}
+                            <p class="help_block">
+                                {{ itemform.item.errors }}
+                            </p>
+                        {% endif %}
+                        {{ itemform.item  }}
+                    </div>           
+                </div>
+                <div class="col-md-3" style="padding-left:">
+                    <input style="background:; color: black;" class="btn btn-default btn-lg btn-block" id="itemsubmit" type="submit" value="Add" >
+                    
+                </div>
+            </form>
+        </div>

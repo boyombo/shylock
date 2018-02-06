@@ -1,42 +1,74 @@
-{% extends "expenses/base.html" %}
-{% block extrahead %}
-<link href="{{ MEDIA_URL }}css/table.css" rel="stylesheet" type="text/css" media="screen" />
-{% endblock %}
-{% block header %}
-Expense Categories
-{% endblock %}
-{% block body %}
-<div>
-<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
-<thead>
-<tr>
-    <th class='sort-alpha'>Name</th>
-</tr>
-</thead>
-<tbody>
-    {% for category in object_list %}
-        <tr class="{% cycle 'even' 'odd' %}">
-            <td>{{ category.name }}</td>
-        </tr>
-    {% empty %}
-    No expense categories to display.
-    {% endfor %}
-</tbody>
-<tfoot>
-    <tr>
-        <td colspan="1">
-            {% for p in paginator.page_range %}
-            {% ifnotequal page p %}
-                <span class="paginator"><a href="?page={{ p}}">{{ p }}</a></span>
-            {% else %}
-            <span class="paginator">{{ p }}</span>
-            {% endifnotequal %}
-            {% endfor %}
-       
-            Total of {{ paginator.count }} item{{ paginator.count|pluralize }}.
-        </td>
-    </tr>
-</tfoot>
-</table>
+{% extends "newbase.html" %}
+{% load staticfiles %}
+
+{% block title %}Expense Categories{% endblock %}
+
+
+{% block content %}
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-9">
+       <div class="table-agile-info">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+               Expense Categories
+            </div>
+
+  
+            <div>
+              <table class="table" ui-jq="footable" ui-options='{
+                "paging": {
+                  "enabled": true
+                },
+                "filtering": {
+                  "enabled": true
+                },
+                "sorting": {
+                  "enabled": true
+                }}'>
+                <thead>
+                  <tr>                    
+                    <th data-breakpoints="xs">Name</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                {% for category in object_list %}
+                    <tr class="{% cycle 'even' 'odd' %}">
+                        <td>{{ category.name }}</td>
+                    </tr>
+                {% empty %}
+                        <p style="text-align:center; padding-top: 15px;">
+                        No expense categories to display.
+                        </p>
+                {% endfor %}
+
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="1">
+                        {% for p in paginator.page_range %}
+                        {% ifnotequal page p %}
+                        <span class="paginator"><a href="?page={{ p}}">{{ p }}</a></span>
+                        {% else %}
+                        <span class="paginator">{{ p }}</span>
+                        {% endifnotequal %}
+                        {% endfor %}
+
+                        Total of {{ paginator.count }} item{{ paginator.count|pluralize }}.
+                        </td>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% include "expenses/_submenu.html" %}
+        </div>
+    </div>
 </div>
-{% endblock %}
+</section>
+
+{% endblock content %}

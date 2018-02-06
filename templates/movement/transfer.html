@@ -1,28 +1,112 @@
-{% extends "movement/base.html" %}
-{% block htmlhead %}
+{% extends "newbase.html" %}
+
+{% block title %}Transfer - Movement{% endblock %}
+
+{% block extrahead %}
+<script type='text/javascript'>
+$(document).ready(function(){
+    $('#id_code').focus();
+ });
+</script>
 {{ form.media }}
 {% endblock %}
-{% block header %}Movement - Transfer{% endblock %}
-{% block body %}
-<form method="POST" action=".">{% csrf_token %} 
-    {{ form.non_field_errors }}
-  <ul>
-      <li>
-      {{ form.item.errors }}
-      {{ form.item.label_tag }}: {{ form.item }}
-      </li>
-      <li>
-      {{ form.quantity.errors }}
-      {{ form.quantity.label_tag }}: {{ form.quantity }}
-      </li>
-      <li>
-      {{ form.source.errors }}
-      {{ form.source.label_tag }}: {{ form.source }}
-      </li>
-     <li>
-      {{ form.destination.errors }}
-      {{ form.destination.label_tag }}: {{ form.destination }}
-      </li>
-      <div class='submit'><input type="SUBMIT" value="Submit" /></div>
- </form>
-{% endblock %}
+
+{% block sub_menu %}{% endblock %}
+
+{% block content %}
+
+
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-offset-2 col-md-7" style="text-align:center;">
+            <div class="panel panel-default" >
+                <div id="contact" class="contact" style="padding-top:15px;">
+                    <div class="container">              
+                        <div class="contact-row agileits-w3layouts" >  
+                            <div class="col-md-6 col-sm-6  contact-w3lsleft" style="text-align:center;">
+                                <div class="contact-grid agileits" style="background: #DDEDE0;">
+                                    <h4 style="color: black;">Movement - Transfer</h4>
+                                    <form action="" method="post">{% csrf_token %}
+                                        {% if form.non_field_errors %}
+                                            {% for error in form.non_field_errors %}
+                                                <div class="has-error">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.item.errors %}
+                                                <p class="help_block">
+                                                    {{ form.item.errors }}
+                                                </p>
+                                            {% endif %}
+                                            {{ form.item  }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.quantity.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.quantity.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.quantity }}
+                                        </div>
+
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.source.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.source.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.source }}
+                                        </div>
+
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.destination.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.destination.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.destination }}
+                                        </div>
+
+                                        <input style="background: #B9EDF0; color: black;" type="submit" value="Submit" >
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+            </div>
+        
+    </div>    
+    <div class="col-md-3">
+        {% include "movement/_submenu.html" %}
+    </div>
+</div>
+</section>
+
+
+{% endblock content %}
+
+
+{% block extra-js %}
+<script>
+  $('#id_item').attr('placeholder', 'Select Item');
+  $('#id_item').addClass('form-control');
+
+  $('#id_quantity').attr('placeholder', 'Quantity');
+  $('#id_quantity').addClass('form-control');
+
+ $('#id_source').attr('placeholder', 'Source');
+  $('#id_source').addClass('form-control');
+
+  $('#id_destination').attr('placeholder', 'Destination');
+  $('#id_destination').addClass('form-control');
+
+  </script>
+{% endblock extra-js %}

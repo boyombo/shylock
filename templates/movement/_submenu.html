@@ -1,9 +1,22 @@
-{% if user.is_superuser %}
-  <li><a href="{% url 'stock_categories' %}">Categories</a></li>
-  <li><a href="{% url 'stock_locations' %}">Location</a></li>
-  <li><a href="{% url 'stock_suppliers' %}">Suppliers</a></li>
-  <li><a href="{% url 'movement_reception_list' %}">Receptions</a></li>
-  <li><a href="{% url 'movement_return_list' %}">Returns</a></li>
-{% endif %}
-<li><a href="{% url 'stock_list' %}">Stock</a></li>
-<li><a href="{% url 'movement_transfers' %}">Transfers</a></li>
+<section class="">
+    <div class="table-agile-info">
+        <ul class="nav nav-pills nav-stacked mail-nav">        
+            <div class="panel-heading">
+                 Fast Links
+            </div>
+            <div class="col-md-8 col-md-offset-2">
+                <ul class="nav nav-pills nav-stacked mail-nav">
+                    {% if user.is_superuser %}
+                        <li><a href="{% url 'stock_categories' %}">Categories</a></li>
+                        <li><a href="{% url 'stock_locations' %}">Location</a></li>
+                        <li><a href="{% url 'stock_suppliers' %}">Suppliers</a></li>
+                        <li><a href="{% url 'movement_reception_list' %}">Receptions</a></li>
+                        <li><a href="{% url 'movement_return_list' %}">Returns</a></li>
+                    {% endif %}
+                    <li><a href="{% url 'stock_list' %}">Stock</a></li>
+                    <li><a href="{% url 'movement_transfers' %}">Transfers</a></li>
+                </ul>
+            </div>
+        </ul>
+    </div>
+</section>

@@ -1,9 +1,9 @@
-{% extends "stock/base.html" %}
-{% load static from staticfiles %}
+{% extends "newbase.html" %}
+{% load staticfiles %}
+
+{% block title %}Stock{% endblock %}
 
 {% block extrahead %}
-<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
-
 <script>
 $(function(){
 $('#locations').val({{current_location_pk}});
@@ -11,53 +11,91 @@ $('#locations').change(function(){
     window.location.replace('?location='+$(this).val());
 });
 });
-
 </script>
-{% endblock %}
-{% block header %}Stock list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
+{% endblock extrahead %}
 
-{% block toplinks %}
-<div style="float: left;">
-    <select id="locations">
-        <option value='' default=true>Select location</option>
-        {% for location in locations %}
-            <option value={{ location.pk }}>{{ location.name }}</value>
-        {% endfor %}
-    </select>
+{% block extra_css %}
+
+{% endblock extra_css %}
+
+
+{% block content %}
+
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-9">
+       <div class="table-agile-info">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+             {% block header %}Stock list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
+            </div>
+
+        <div class="row">
+            <div class="col-md-9" style="padding-right:">
+                <select id="locations" class="form-control input-lg">
+                    <option value="" default=true >Select location</option>
+                    {% for location in locations %}
+                        <option value={{ location.pk }}>{{ location.name }}</value>
+                    {% endfor %}
+                </select>                
+            </div>
+            <div class="col-md-3" style="padding-left:">
+                <a style="display:block;" href="{% url 'stock_newitem' %}" class="btn btn-default btn-lg ">Add new</a>
+            </div>
+        </div>
+        
+            <div>
+              <table class="table" ui-jq="footable" ui-options='{
+                "paging": {
+                  "enabled": true
+                },
+                "filtering": {
+                  "enabled": true
+                },
+                "sorting": {
+                  "enabled": true
+                }}'>
+                <thead>
+                  <tr>
+                    
+                    <th data-breakpoints="xs">ID</th>
+                    <th>Item</th>
+                    <th>Qty</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    {% for stock in items %}
+                      <tr data-expanded="true" class="{% cycle "even" "odd" %}">
+                        <td>{{ stock.0 }}</td>
+                        <td>{{ stock.1 }}</td>
+                        <td>{{ stock.2 }}</td>
+                        <td>{{ stock.3 }}</td>
+                      </tr>
+                    {% empty %}
+                        <p style="text-align:center; padding-top: 15px;">
+                            No items to display
+                        </p>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td>Count: {{ items|length }}</td>
+                        <td colspan="4"></td>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% include "movement/_submenu.html" %}
+        </div>
+    </div>
 </div>
-<div style="float: right;"><a href="{% url 'stock_newitem' %}" class="addbutton">add new</a></div>
-{% endblock %}
+</section>
 
-{% block body %}
-<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
-<thead>
-<tr>
-    <th class='sort-alpha'>Item</th>
-    <th class='sort-alpha'>Qty</th>
-    <th class='sort-alpha'>Cost Price</th>
-    <th class='sort-alpha'>Selling Price</th>
-</tr>
-</thead>
-<tbody>
-        {% for stock in items %}
-            <tr class={% cycle "even" "odd" %}>
-                <td>{{ stock.0 }}</td>
-                <td>{{ stock.1 }}</td>
-                <td>{{ stock.2 }}</td>
-                <td>{{ stock.3 }}</td>
-            </tr>
-        {% empty %}
-        No items to display
-        {% endfor %}
-</tbody>
-<tfoot>
-    <tr>
-        <td>Count: {{ items|length }}</td>
-        <td colspan=4></td>
-    </tr>
-</tfoot>
-</table>
-<br />
-<script type="text/javascript">
-</script>
-{% endblock %}
+{% endblock content %}

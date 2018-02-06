@@ -1,4 +1,7 @@
-{% extends "stock/base_serial.html" %}
+{% extends "newbase.html" %}
+
+{% block title %}New Item{% endblock %}
+
 {% block extrahead %}
 <script type='text/javascript'>
 $(document).ready(function(){
@@ -7,32 +10,176 @@ $(document).ready(function(){
 </script>
 {{ form.media }}
 {% endblock %}
-{% block header %}New Item{% endblock %}
-{% block body %}
 
-<form method="POST" action=".">{% csrf_token %} 
-  <ul>
-      <li>
-      {{ form.serial_number.errors }}
-      {{ form.serial_number.label_tag }} {{ form.serial_number }}
-      </li>
-      <li>
-      {{ form.category.errors }}
-      {{ form.category.label_tag }} {{ form.category }}
-      </li>
-      <li>
-      {{ form.location.errors }}
-      {{ form.location.label_tag }} {{ form.location }}
-      </li>
-      <li>
-      {{ form.cost_price.errors }}
-      {{ form.cost_price.label_tag }} {{ form.cost_price }}
-      </li>
-      <li>
-      {{ form.selling_price.errors }}
-      {{ form.selling_price.label_tag }} {{ form.selling_price }}
-      </li>
-      </ul>
-  <div class='submit'><input type="SUBMIT" value="Submit" /></div>
- </form>
-{% endblock %}
+{% block sub_menu %}{% endblock %}
+
+{% block content %}
+
+
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-offset-2 col-md-7" style="text-align:center;">
+            <div class="panel panel-default" >
+                <div id="contact" class="contact" style="padding-top:15px;">
+                    <div class="container">              
+                        <div class="contact-row agileits-w3layouts" >  
+                            <div class="col-md-6 col-sm-6  contact-w3lsleft" style="text-align:center;">
+                                <div class="contact-grid agileits" style="background: #DDEDE0;">
+                                    <h4 style="color: black;">New Item</h4>
+                                    <form action="" method="post">{% csrf_token %}
+                                        {% if form.non_field_errors %}
+                                            {% for error in form.non_field_errors %}
+                                                <div class="has-error">
+                                                    {{ error }}
+                                                </div>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.serial_number.errors %}
+                                                <p class="help_block">
+                                                    {{ form.serial_number.errors }}
+                                                </p>
+                                            {% endif %}
+                                            {{ form.serial_number  }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.category.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.category.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.category }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.location.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.location.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.location }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.cost_price.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.cost_price.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.cost_price }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.selling_price.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.selling_price.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.selling_price }}
+                                        </div>
+
+                                        <input style="background: #B9EDF0; color: black;" type="submit" value="Submit" >
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                     
+                </div>
+            </div>
+        
+    </div>    
+    <div class="col-md-3">
+        {% include "movement/_submenu.html" %}
+    </div>
+</div>
+</section>
+
+
+{% endblock content %}
+
+
+{% block extra-js %}
+<script>
+  $('#id_serial_number').attr('placeholder', 'Serial Number');
+  $('#id_serial_number').addClass('form-control');
+
+  $('#id_category').attr('placeholder', 'Category');
+  $('#id_category').addClass('form-control');
+ 
+  $('#id_location').attr('placeholder', 'Location');
+  $('#id_location').addClass('form-control');
+
+  $('#id_cost_price').attr('placeholder', 'Cost Price');
+  $('#id_cost_price').addClass('form-control');
+
+  $('#id_selling_price').attr('placeholder', 'Selling Price');
+  $('#id_selling_price').addClass('form-control');
+
+  </script>
+{% endblock extra-js %}
+
+
+                                        <div class="form-group has-feedback">
+                                            {% if fform.category.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.category.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.category }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.quantity.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.quantity.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.quantity }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.location.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.location.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.location }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.cost_price.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.cost_price.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.cost_price }}
+                                        </div>
+
+                                        <div class="form-group has-feedback">
+                                            {% if form.selling_price.errors %}
+                                                <div class="alert alert-danger">
+                                                    {{ form.selling_price.errors }}
+                                                </div>
+                                            {% endif %}
+                                            {{ form.selling_price }}
+                                        </div>
+
+
+
+  $('#id_category').attr('placeholder', 'Category');
+  $('#id_category').addClass('form-control');
+
+  $('#id_quantity').attr('placeholder', 'Quantity');
+  $('#id_quantity').addClass('form-control');
+
+  $('#id_location').attr('placeholder', 'Location');
+  $('#id_location').addClass('form-control');
+
+  $('#id_cost_price').attr('placeholder', 'Cost Price');
+  $('#id_cost_price').addClass('form-control');
+
+  $('#id_selling_price').attr('placeholder', 'Selling Price');
+  $('#id_selling_price').addClass('form-control');

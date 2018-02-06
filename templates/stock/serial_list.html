@@ -1,71 +1,106 @@
-{% extends "stock/base_serial.html" %}
-{% load humanize %}
-{% load static from staticfiles %}
+{% extends "newbase.html" %}
+{% load staticfiles %}
 
-{% block extrahead %}
-<link href="{% static 'css/table.css' %}" rel="stylesheet" type="text/css" media="screen" />
+{% block title %}Serial list{% endblock %}
 
-{% endblock %}
-{% block header %}Serial list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
 
-{% block toplinks %}
-<div style="float: left;">
+{% block content %}
+<section class="wrapper">
+<div class="row">
+    <div class="col-md-9">
+       <div class="table-agile-info">
+         <div class="panel panel-default">
+            <div class="panel-heading">
+             {% block header %}Serial list {% if current_location %}({{ current_location }}){% endif %}{% endblock %}
+            </div>
+
+        <div class="row">
+            <div class="col-md-9" style="padding-right:">
+                <!-- <select id="locations" class="form-control input-lg">
+                    <option value="" default=true >Select location</option>
+                    {% for location in locations %}
+                        <option value={{ location.pk }}>{{ location.name }}</value>
+                    {% endfor %}
+                </select>   -->             
+            </div>
+            <div class="col-md-3" style="padding-left:">
+                <a style="display:block;" href="{% url 'serial_newitem' %}" class="btn btn-default btn-lg ">Add new</a>
+            </div>
+        </div>
+        
+            <div>
+              <table class="table" ui-jq="footable" ui-options='{
+                "paging": {
+                  "enabled": true
+                },
+                "filtering": {
+                  "enabled": true
+                },
+                "sorting": {
+                  "enabled": true
+                }}'>
+                <thead>
+                  <tr>
+                    
+                    <th data-breakpoints="xs">Category</th>
+                    <th>Number</th>
+                    <th>Location</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>Sale Date</th>
+                    <th>Customer</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+
+                    {% for item in items %}
+                      <tr data-expanded="true" class="{% cycle "even" "odd" %}">
+                        <td>{{ item.category }}</td>
+                        <td>{{ item.serial_number }}</td>
+                        <td>{{ item.location }}</td>
+                        <td>{{ item.cost_price }}</td> <!-- |intcomma -->
+                        <td>{{ item.selling_price }}</td> <!-- |intcomma -->
+                        <td>{{ item.sale_date }}</td>
+                        <td>{{ item.customer }}</td>
+                        <td>
+                            {% if item.sale_date %}
+                                Sold
+                            {% else %}
+                            <a href="#">In Stock</a>
+                            {% endif %}
+                        </td>
+                      </tr>
+                    {% empty %}
+                        <p style="text-align:center; padding-top: 15px;">
+                            No items to display
+                        </p>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td><strong>In-Stock</strong></td>
+                        <td colspan=1>Count: {{ instock_count }}</td>
+                        <td colspan=3>Cost price: {{ instock_cost}}</td> <!-- |intcomma -->
+                        <td colspan=3>Selling price: {{ instock_selling}}</td> <!-- |intcomma -->
+                    </tr>
+                    <tr>
+                        <td><strong>Sold</strong></td>
+                        <td colspan=1>Count: {{ sold_count }}</td>
+                        <td colspan=3>Cost price: {{ sold_cost }}</td>
+                        <td colspan=3>Selling price: {{ sold_selling}}</td>
+                    </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        {% include "movement/_serialmenu.html" %}
+        </div>
+    </div>
 </div>
-<div style="float: right;"><a href="{% url 'serial_newitem' %}" class="addbutton">add new</a></div>
-{% endblock %}
+</section>
 
-{% block body %}
-<table border=0 cellpadding=3 cellspacing=0 width=100% class="sortable">
-<thead>
-<tr>
-    <th class='sort-alpha'>Category</th>
-    <th class='sort-alpha'>Number</th>
-    <th class='sort-alpha'>Location</th>
-    <th class='sort-alpha'>Cost Price</th>
-    <th class='sort-alpha'>Selling Price</th>
-    <th class='sort-alpha'>Sale Date</th>
-    <th class='sort-alpha'>Customer</th>
-    <th class='sort-alpha'>Status</th>
-</tr>
-</thead>
-<tbody>
-        {% for item in items %}
-            <tr class={% cycle "even" "odd" %}>
-                <td>{{ item.category }}</td>
-                <td>{{ item.serial_number }}</td>
-                <td>{{ item.location }}</td>
-                <td>{{ item.cost_price|intcomma }}</td>
-                <td>{{ item.selling_price|intcomma }}</td>
-                <td>{{ item.sale_date }}</td>
-                <td>{{ item.customer }}</td>
-                <td>
-                    {% if item.sale_date %}
-                        Sold
-                    {% else %}
-                    <a href="#">In Stock</a>
-                    {% endif %}
-                </td>
-            </tr>
-        {% empty %}
-        No items to display
-        {% endfor %}
-</tbody>
-<tfoot>
-    <tr>
-        <td><strong>In-Stock</strong></td>
-        <td colspan=1>Count: {{ instock_count }}</td>
-        <td colspan=3>Cost price: {{ instock_cost|intcomma }}</td>
-        <td colspan=3>Selling price: {{ instock_selling|intcomma }}</td>
-    </tr>
-    <tr>
-        <td><strong>Sold</strong></td>
-        <td colspan=1>Count: {{ sold_count }}</td>
-        <td colspan=3>Cost price: {{ sold_cost|intcomma }}</td>
-        <td colspan=3>Selling price: {{ sold_selling|intcomma }}</td>
-    </tr>
-</tfoot>
-</table>
-<br />
-<script type="text/javascript">
-</script>
-{% endblock %}
+{% endblock content %}
